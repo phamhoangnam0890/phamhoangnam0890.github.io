@@ -1,0 +1,74 @@
+<app-common-nav></app-common-nav>
+<section class="container s-item-events">
+
+    <nav class="nav-breadcrumb">
+        <ul>
+            <li><a [routerLink]="['/']"><span class="material-icons">home</span></a></li>
+            <li><a [routerLink]="['/item-events/rakuten']">楽天イベント管理</a></li>
+            <li><a [routerLink]="['/item-events/rakuten/delete/'+this.itemEventId]">削除：text</a></li>
+        </ul>
+    </nav>
+
+    <div class="card" *ngIf="rakutenEvent">
+        <div class="card-body">
+            <div class="alert alert-danger">
+                以下の楽天イベントを削除してもよろしいですか？
+            </div>
+
+            <table class="table table-common-form">
+                <tbody>
+
+                    <tr>
+                        <th>イベント名</th>
+                        <td>
+                            {{rakutenEvent.rakutenEventName}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>イベント開始月</th>
+                        <td>{{rakutenEvent.startYearMonth}}</td>
+                    </tr>
+                    <tr>
+                        <th>開始期間</th>
+                        <td>{{rakutenEvent.periodStart.seconds ?
+                            this.commonService.secondsToJpDateFormatWithSeparator(rakutenEvent.periodStart.seconds, '/')
+                            : ''}}</td>
+                    </tr>
+                    <tr>
+                        <th>終了期間</th>
+                        <td>{{rakutenEvent.periodEnd.seconds ?
+                            this.commonService.secondsToJpDateFormatWithSeparator(rakutenEvent.periodEnd.seconds, '/') :
+                            ''}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card-footer double">
+            <a disableOnLoading="a" class="btn btn-outline-secondary"
+                [routerLink]="['/item-events/rakuten/info/'+itemEventId]">キャンセル</a>
+            <button disableOnLoading="button" class="btn btn-danger" type="button" (click)="onDelete()">削除</button>
+        </div>
+    </div>
+
+</section>
+
+
+<!-- Modal -->
+<div class="modal fade" id="modalDeleteComplete" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">楽天イベント　削除完了</h5>
+            </div>
+            <div class="modal-body message">
+                削除完了いたしました。一覧へ遷移します。
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    一覧画面へ移動
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

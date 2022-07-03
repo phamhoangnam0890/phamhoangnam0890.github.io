@@ -1,0 +1,170 @@
+@import "../style";
+
+nav.side-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: $side-bar-width;
+  min-height: calc(100vh - #{$header-height});
+  margin-top: $header-height;
+  background-color: #3a4651;
+  z-index: 100;
+  ul.side-menu {
+    li {
+      a {
+        display: block;
+        padding: 15px 15px;
+        color: #fff;
+        border-bottom: 1px solid #2f363c;
+
+        @include hover();
+        @include flex();
+        &:hover {
+          background-color: #506272;
+        }
+        .material-icons {
+          margin-right: 15px;
+        }
+
+        &.active {
+          background-color: #68b514;
+        }
+      }
+      .nav-check {
+        display: none;
+      }
+      .nav-link,
+      .nav-label {
+        padding: 14px 20px;
+        margin: 0;
+        display: block;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        align-items: center;
+        display: flex;
+        color: #fff;
+        cursor: pointer;
+        border-bottom: 1px solid #2f363c;
+
+        i.material-icons {
+          font-size: 20px;
+        }
+        span {
+          display: block;
+          padding-left: 14px;
+        }
+      }
+      .nav-link {
+        &:hover {
+          background-color: #222;
+        }
+
+        .badge {
+          margin-left: auto;
+        }
+      }
+
+      &.active {
+        .nav-link,
+        .nav-label {
+          background-color: #68b514;
+          transition: 0.3s;
+
+          i.material-icons {
+            color: #222;
+          }
+
+          &:hover {
+            background-color: #68b514;
+            opacity: 0.9;
+
+            i.material-icons {
+              color: #222;
+            }
+          }
+        }
+      }
+
+      // アコーディオン
+      .nav-label {
+        position: relative;
+        &:after {
+          box-sizing: border-box;
+          content: "\e5cc";
+          display: block;
+          font-family: "Material Icons";
+          font-weight: normal;
+          font-style: normal;
+          font-size: 24px; /* Preferred icon size */
+          display: inline-block;
+          line-height: 1;
+          text-transform: none;
+          letter-spacing: normal;
+          word-wrap: normal;
+          white-space: nowrap;
+          direction: ltr;
+          position: absolute;
+          right: 20px;
+          top: calc(50% - 13px);
+        }
+      }
+      .nav-content {
+        display: block;
+        height: 0;
+        opacity: 0;
+        transition: 0.5s;
+        visibility: hidden;
+
+        ul {
+          li {
+            a {
+              display: block;
+              background-color: #22282e;
+              transition: 0.3s;
+
+              padding-left: 30px;
+              &:hover {
+                background-color: #222;
+              }
+
+              &.active {
+                background-color: #68b514;
+                color: #fff;
+              }
+            }
+          }
+        }
+      }
+      .nav-check {
+        &:checked {
+          + .nav-label {
+            background-color: #000;
+            color: #fff;
+            &:after {
+              content: "\e5cf";
+              color: #fff;
+            }
+
+            i.material-icons {
+              color: #fff;
+            }
+            &:hover {
+              color: #fff;
+
+              i.material-icons {
+                color: #fff;
+              }
+            }
+
+            + .nav-content {
+              opacity: 1;
+              height: auto;
+              padding: 0px;
+              visibility: visible;
+            }
+          }
+        }
+      }
+    }
+  }
+}

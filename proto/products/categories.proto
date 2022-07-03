@@ -1,0 +1,44 @@
+syntax = "proto3";
+package products;
+
+option go_package = "github.com/phamhoangnam0890/product-management-service/app/proto/products";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+service CategoriesService {
+
+  rpc CategoriesList (CategoriesListRequest) returns (CategoriesListResponse) {
+  }
+  rpc CategoryInfo (CategoryInfoRequest) returns (CategoryInfoResponse) {
+  }
+  rpc CategoryEntry (CategoryEntryRequest) returns (google.protobuf.Empty) {
+  }
+}
+
+message CategoriesListRequest {
+  google.protobuf.Int64Value offset = 1;
+}
+
+message CategoriesListResponse {
+  repeated CategoryData data = 1;
+  int64 total = 2;
+}
+
+message CategoryData {
+  int64 category_id = 1;
+  string category_name = 2;
+}
+
+message CategoryInfoRequest {
+  int64 category_id = 1;
+}
+
+message CategoryInfoResponse {
+  string category_name = 1;
+}
+
+message CategoryEntryRequest {
+  google.protobuf.Int64Value category_id = 1;
+  string category_name = 2;
+}

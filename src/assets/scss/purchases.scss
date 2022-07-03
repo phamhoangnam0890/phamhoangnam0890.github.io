@@ -1,0 +1,68 @@
+@import "./style";
+
+.s-purchase {
+  .select-purchase-status {
+    margin-bottom: 10px;
+    width: 195px;
+  }
+
+  .d-purchase-image-thumbnail-list {
+    img {
+      @include hover();
+      width: 90px;
+      height: 90px;
+      object-fit: cover;
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+  }
+  .table-purchase-list {
+    table-layout: fixed;
+    thead {
+      tr {
+        th {
+          &:nth-child(1) {
+            width: 50px;
+          }
+          &:nth-child(2) {
+            width: auto;
+          }
+          &:nth-child(3) {
+            width: 70px;
+          }
+          &:nth-child(5) {
+            width: 60px;
+          }
+          &:nth-child(7),
+          &:nth-child(9) {
+            width: 120px;
+          }
+
+          &:nth-child(8) {
+            width: 15%;
+          }
+        }
+      }
+    }
+    tbody {
+      tr {
+        &.selected {
+          background: aliceblue;
+        }
+        td {
+          &:nth-child(1) {
+            text-align: center;
+          }
+          &:nth-child(5) {
+            text-align: right;
+          }
+          .img-purchase {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+          }
+        }
+      }
+    }
+  }
+}

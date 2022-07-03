@@ -1,0 +1,96 @@
+<app-common-nav></app-common-nav>
+<section class="container s-system-settings">
+    <nav class="nav-breadcrumb">
+        <ul>
+            <li><a [routerLink]="['/']"><span class="material-icons">home</span></a></li>
+            <li><a [routerLink]="['/settings']">システム設定</a></li>
+        </ul>
+    </nav>
+    <h1></h1>
+    <div class="card">
+        <div class="card-body">
+            <h1>システム設定</h1>
+            <h2 class="d-flex-sb"><span>楽天市場</span>
+                <button class="btn btn-dark btn-sm" (click)="onEditRakuten()">編集</button>
+            </h2>
+            <table class="table table-common-info table-item-info-shop" *ngIf="systemLicense">
+                <tbody>
+                    <tr>
+                        <th>ライセンスキー</th>
+                        <td>{{systemLicense.licenseKey}}</td>
+                    </tr>
+                    <tr>
+                        <th>有効期限</th>
+                        <td>{{this.commonService.secondsToJpDateFormatWithSeparator(systemLicense.expiredAt.seconds ?
+                            systemLicense.expiredAt.seconds: 0, '/')}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="modalEditRakuten" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-600">
+        <form [formGroup]="systemSettingRakutenForm" (ngSubmit)="onSaveRakuten()" class="needs-validation" novalidate>
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">システム設定：楽天市場</h5>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-common-form table-system-edit-rakuten">
+                        <tbody formGroupName="basic">
+                            <tr>
+                                <th>ライセンスキー<span class="required">必須</span></th>
+                                <td>
+                                    <input formControlName="licenseKey" type="text" class="form-control" required>
+                                    <div class="invalid-feedback">
+                                        ※ライセンスキーは必須入力項目です。
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>有効期限<span class="required">必須</span></th>
+                                <td>
+                                    <input formControlName="validDate" type="date" class="form-control" required>
+                                    <div class="invalid-feedback">
+                                        ※有効期限は必須入力項目です。
+                                    </div>
+                                </td>
+                            </tr>
+                    </table>
+                </div>
+                <div class="modal-footer double">
+                    <button disableOnLoading="button" type="button" class="btn btn-outline-secondary"
+                        data-bs-dismiss="modal">
+                        キャンセル
+                    </button>
+                    <button disableOnLoading="button" class="btn btn-primary" type="submit"
+                        [disabled]="this.systemSettingRakutenForm.invalid">保存
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalEditRakutenComplete" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">保存完了</h5>
+            </div>
+            <div class="modal-body message">
+                楽天市場の設定を保存しました。
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    閉じる
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

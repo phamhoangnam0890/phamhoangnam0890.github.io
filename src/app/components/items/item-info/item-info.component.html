@@ -1,0 +1,331 @@
+<app-common-nav></app-common-nav>
+<section class="container s-items">
+    <nav class="nav-breadcrumb">
+        <ul>
+            <li><a [routerLink]="['/']"><span class="material-icons">home</span></a></li>
+            <li><a [routerLink]="['/items']">Products</a></li>
+            <li *ngIf="productInfo"><a [routerLink]="['/items/info/'+productItemId]">Info：{{productInfo.productId}}</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="alert alert-danger" *ngIf="saleStopStatuFlg && saleStopStatuFlg == 'STOP'">
+        この商品は、販売中止です。
+    </div>
+    <div class="card" [class.card-block]="saleStopStatuFlg == 'STOP'">
+        <div class="card-body" *ngIf="productInfo && productInfo.productItemId != 0">
+            <h2 class="d-flex-sb">
+                <span class="title-left">Product Info</span>
+                <!--                <button class="btn btn-success btn-sm btn-purchase" (click)="onPurchaseEntry()">仕入登録</button>-->
+                <!--                <button class="btn btn-outline-secondary btn-sm btn-copy" (click)="onCopy()"-->
+                <!--                        *ngIf="productInfo.rakutenEventData.length == 0">COPY-->
+                <!--                </button>-->
+                <a *ngIf="commonService.getUserRole() === 'admin'" class="btn btn-dark btn-sm"
+                   [routerLink]="['/items/edit/'+ productItemId]">Edit</a>
+            </h2>
+
+            <div class="item-event-rakuten"
+                 *ngIf="productInfo && productInfo.rakutenEventData && productInfo.rakutenEventData.length > 0">
+                <span *ngFor="let re of productInfo.rakutenEventData"
+                      class="badge bg-rakuten">{{re.rakutenEventName}}</span>
+            </div>
+
+            <table class="table table-common-info table-item-info-shop">
+                <tbody *ngIf="productInfo && productInfo.productItemId != 0">
+                <tr>
+                    <th>Category</th>
+                    <td>
+                        {{productInfo.categoryName}}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Product ID</th>
+                    <td>{{productInfo.productId}}</td>
+                </tr>
+                <tr>
+                    <th>Product name</th>
+                    <td>
+                        {{productInfo.productItemName}}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Input Price</th>
+                    <td>{{productInfo.inputPrice}}
+                    </td>
+                </tr>
+                <tr>
+                    <th>URL</th>
+                    <td>{{productInfo.url}}
+                        <br>
+                        <qrcode *ngIf="productInfo.url" [qrdata]="productInfo.url"
+                                [width]="256"
+                                [errorCorrectionLevel]="'M'"></qrcode>
+                    </td>
+                    <!--                        <td>※仕入れ先が複数ある場合はその都度別のマスターを作る？</td>-->
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>
+                        <ng-container
+                                *ngFor="let p of this.commonService.splitLines(productInfo.description); let i = index">
+                            {{p}}
+                            <br *ngIf=" i < this.commonService.splitLines(productInfo.description).length - 1">
+                        </ng-container>
+                    </td>
+                    <!--                        <td>※仕入れ先が複数ある場合はその都度別のマスターを作る？</td>-->
+                </tr>
+                <tr>
+                    <th>Input Price</th>
+                    <td>{{productInfo.inputPrice}}</td>
+                    <!--                        <td>※仕入れ先が複数ある場合はその都度別のマスターを作る？</td>-->
+                </tr>
+                <tr>
+                    <th>Price Tax</th>
+                    <td>{{productInfo.priceTax}}</td>
+                    <!--                        <td>※仕入れ先が複数ある場合はその都度別のマスターを作る？</td>-->
+                </tr>
+                <!--                <tr>-->
+                <!--                    <th>画像</th>-->
+                <!--                    <td>-->
+                <!--                        <div class="d-item-image-thumbnail-list">-->
+                <!--                            <ng-container *ngFor="let image of images; let idx = index">-->
+                <!--                                <img [src]="image.src" class="img-thumbnail" (click)="openImageView(idx)"-->
+                <!--                                     [alt]="idx">-->
+                <!--                            </ng-container>-->
+                <!--                        </div>-->
+                <!--                    </td>-->
+                <!--                </tr>-->
+                <tr>
+                    <th>Quantity</th>
+                    <td>{{productInfo.quantity}}</td>
+                    <!--                        <td>※仕入れ先が複数ある場合はその都度別のマスターを作る？</td>-->
+                </tr>
+                <tr>
+                    <th>Input Date</th>
+                    <td>{{productInfo.inputDate && productInfo.inputDate.seconds ? this.commonService.secondsToJpDateFormatWithSeparator(productInfo.inputDate.seconds,
+                        '/') : ''}}
+                    </td>
+                    <!--                        <td>※仕入れ先が複数ある場合はその都度別のマスターを作る？</td>-->
+                </tr>
+
+                </tbody>
+            </table>
+
+
+        </div>
+        <!--        <div class="card-footer text-end" *ngIf="!saleStopStatuFlg">-->
+        <!--            <button disableOnLoading="button" class="btn btn-link text-secondary w-auto" type="button"-->
+        <!--                    (click)="onSaleStop()">販売中止-->
+        <!--            </button>-->
+        <!--        </div>-->
+    </div>
+    <!--    <div class="d-flex-sb me-2 mt-4">-->
+    <!--        <a class="btn btn-link text-danger" (click)="onDeleteCheck()">削除</a>-->
+    <!--        <button disableOnLoading="button" class="btn btn-link text-primary w-auto" type="button"-->
+    <!--                (click)="onSaleOpenCheck()" *ngIf="saleStopStatuFlg">販売の再開-->
+    <!--        </button>-->
+    <!--    </div>-->
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="modalCopyCheck" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">商品コピー</h5>
+            </div>
+            <div class="modal-body">
+                <div class="message">
+                    コピーしますか？
+                </div>
+
+                <div class="select-copy">
+
+                    <label>コピー理由</label>
+
+                    <select class="form-select" [(ngModel)]="selectedCopyType">
+                        <option value="null" disabled selected>▼楽天イベント</option>
+                        <option *ngFor="let re of rakutenEvents" [value]="re.rakutenEventId">{{re.rakutenEventName}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer double">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    キャンセル
+                </button>
+                <button type="button" (click)="onCopyMove()" data-bs-dismiss="modal" class="btn btn-dark"
+                        [disabled]="selectedCopyType == null">COPY
+                </button>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="modalPurchaseEntry" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">仕入登録</h5>
+            </div>
+            <div class="modal-body">
+                <table class="table table-modal-purchase-entry">
+                    <tbody>
+                    <th>仕入数</th>
+                    <td>
+                        <input disableOnLoading="input" [ngModel]="sourceNum"
+                               (ngModelChange)="sourceNumChange($event)" type="number" class="form-control w-price">
+                    </td>
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="modal-footer double">
+                <button type="button" disableOnLoading="button" class="btn btn-outline-secondary"
+                        data-bs-dismiss="modal">
+                    キャンセル
+                </button>
+                <button type="button" disableOnLoading="button" class="btn btn-success" (click)="onCreateStock()">登録
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalSaleStop" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">販売中止</h5>
+            </div>
+            <div class="modal-body">
+                <ng-container *ngIf="saleStopOpenStatusFlg">
+                    <div class="message text-center mt-3">
+                        <p>各ストアが公開中は、販売停止できません。ご確認ください。</p>
+                    </div>
+                    <table class="table table-common-info table-item-info-shop mt-4">
+                        <tbody *ngIf="reflections && productInfo && productInfo.productItemId != 0">
+                        <tr *ngFor="let r of reflections; let idx = index">
+                            <th>{{r.shopName}}</th>
+                            <td>
+                                <ng-container *ngIf="r.productItemId == 0">
+                                    設定なし
+                                </ng-container>
+                                <ng-container *ngIf="r.productItemId != 0 && r.status == 0">
+                                    非公開中
+                                </ng-container>
+                                <ng-container *ngIf="r.productItemId != 0 && r.status == 1">
+                                    <span class="text-primary">公開中</span>
+                                </ng-container>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </ng-container>
+                <ng-container *ngIf="!saleStopOpenStatusFlg">
+                    <div class="message text-center mt-4 mb-4">
+                        <p>販売中止して、よろしいですか？</p>
+                    </div>
+
+                </ng-container>
+            </div>
+            <div class="modal-footer double" [class.double]="!saleStopOpenStatusFlg">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    キャンセル
+                </button>
+                <button type="button" data-bs-dismiss="modal" class="btn btn-secondary" *ngIf="!saleStopOpenStatusFlg"
+                        (click)="onSaleStopComplete()">販売停止
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalSaleOpenCheck" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">販売の再開</h5>
+            </div>
+            <div class="modal-body">
+                <div class="message text-center mt-4 mb-4">
+                    <p>販売を再開しますか？</p>
+                </div>
+            </div>
+            <div class="modal-footer double">
+                <button type="button" class="btsaleStopStatuFlgn btn-outline-secondary" data-bs-dismiss="modal">
+                    キャンセル
+                </button>
+                <button type="button" data-bs-dismiss="modal" class="btn btn-dark" (click)="onSaleOpen()">販売の再開
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalSaleStopComplete" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">販売中止 完了</h5>
+            </div>
+            <div class="modal-body">
+                <div class="message text-center mt-4 mb-4">
+                    <p>販売中止しました。</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    閉じる
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalDeleteCheck" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">削除確認</h5>
+            </div>
+            <div class="modal-body">
+                <div class="message text-center mt-4 mb-4">
+                    <p>この商品を削除しても<br>よろしいですか？</p>
+                </div>
+            </div>
+            <div class="modal-footer double">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    キャンセル
+                </button>
+                <button type="button" data-bs-dismiss="modal" class="btn btn-danger" (click)="onDelete()">削除
+                </button>
+            </div>
+        </div>
+    </div>
+</div><!-- Modal -->
+<div class="modal fade" id="modalDeleteComplete" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">削除完了</h5>
+            </div>
+            <div class="modal-body">
+                <div class="message text-center mt-4 mb-4">
+                    <p>削除しました。</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    閉じる
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

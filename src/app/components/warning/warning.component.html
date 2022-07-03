@@ -1,0 +1,70 @@
+<header class="header">
+    <div class="title" [routerLink]="['/']">
+        <img src="/assets/img/img-logo.svg" alt="在庫管理システム" class="img-logo">
+        <span>在庫管理システム</span>
+    </div>
+    <div class="btn-group">
+        <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            {{userName}}
+        </button>
+        <ul class="dropdown-menu">
+            <li (click)="logOut()">ログアウト</li>
+        </ul>
+    </div>
+</header>
+
+<section class="container s-dashboard warning">
+
+    <h2>警告</h2>
+    <ng-container *ngIf="warnings && warnings.length > 0">
+        <div class="card mb-3">
+            <ng-container *ngFor="let w of warnings">
+                <div class="card-body border-bottom" *ngIf="w.length > 0">
+                    <ng-container *ngIf="w == 'BASE_AUTH'">
+                        <p>BASE トークンの有効期限が切れました。</p>
+                        <p>更新して下さい。</p>
+                        <div class="mt-3 mb-2">
+                            <a class="btn btn-dark btn-sm" target="_blank" href="{{env.shopInitBaseTokenUrl}}">更新</a>
+                        </div>
+                        <p><small>※更新後、この画面を再読み込みするか、再度、ログインしてください。</small></p>
+                    </ng-container>
+                    <ng-container *ngIf="w == 'YAHOO_AUTH'">
+                        <p>Yahoo!ショッピングのトークンの有効期限が切れました。</p>
+                        <p>更新して下さい。</p>
+                        <div class="mt-3 mb-2">
+                            <a class="btn btn-dark btn-sm" target="_blank" href="{{env.shopInitYahooTokenUrl}}">更新</a>
+                        </div>
+                        <p><small>※更新後、この画面を再読み込みするか、再度、ログインしてください。</small></p>
+                    </ng-container>
+                    <ng-container *ngIf="w == 'RAKUTEN_LICENSE'">
+                        <div class="label-rakuten">
+                            楽天ライセンスキー<span class="required">必須</span>
+                        </div>
+                        <div>
+                            <form [formGroup]="systemSettingRakutenForm" (ngSubmit)="onSaveRakutenLicense()"
+                                class="needs-validation" novalidate>
+                                <div formGroupName="basic">
+                                    <input formControlName="licenseKey" type="text" class="form-control" required>
+
+                                    <div class="invalid-feedback">
+                                        ※ライセンスキーは必須入力項目です。
+                                    </div>
+                                </div>
+
+                                <div class="mt-3 mb-2">
+                                    <button class="btn btn-dark btn-sm">保存</button>
+                                </div>
+                            </form>
+
+                        </div>
+                    </ng-container>
+                </div>
+            </ng-container>
+            <div class="card-footer text-end border-top-0">
+                <button class="btn btn-secondary btn-sm" (click)="reset()">再読み込み</button>
+                <button class="btn btn-dark btn-sm" (click)="logOut()">ログイン</button>
+            </div>
+        </div>
+    </ng-container>
+
+</section>

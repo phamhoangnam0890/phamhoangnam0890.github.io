@@ -1,0 +1,137 @@
+@import "./style";
+
+.s-item-categories {
+  .table-common-list.table-item-categories-list {
+    max-width: 700px;
+    thead {
+      tr {
+        th {
+          &:nth-child(1) {
+            width: 600px;
+          }
+          &:nth-child(2) {
+            width: 100px;
+          }
+        }
+      }
+    }
+  }
+  .table-item-category-list {
+    thead {
+      tr {
+        th {
+          &:nth-child(1) {
+            width: 100px;
+          }
+          &:nth-child(2) {
+            width: 100px;
+          }
+          &:nth-child(3) {
+            width: auto;
+          }
+        }
+      }
+    }
+    tbody {
+      tr {
+        td {
+          .img-item {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+          }
+        }
+      }
+    }
+  }
+}
+
+#modalListOrderChange {
+  // 検索
+  .card-common-search {
+    margin-bottom: 10px;
+
+    .d-search {
+      .btn-search {
+        width: 70px;
+      }
+      .search-item {
+        width: 140px;
+
+        &.period {
+          width: auto;
+
+          .d-period {
+            display: flex;
+            align-items: center;
+
+            span {
+              margin-left: 10px;
+              margin-right: 10px;
+            }
+            input {
+              width: 130px;
+            }
+          }
+        }
+      }
+    }
+  }
+  .d-all-check {
+    margin-bottom: 10px;
+    background: aliceblue;
+    display: flex;
+    font-size: 0.9rem;
+    font-weight: 700;
+    display: block;
+    padding: 6px;
+    span {
+      margin-left: 7px;
+    }
+  }
+  .select-list {
+    max-height: 50vh;
+    overflow-y: scroll;
+    padding-right: 13px;
+    .item-info {
+      position: relative;
+      .form-check-label {
+        display: block;
+        border-bottom: 1px solid #ddd;
+        padding: 3px 30px;
+        display: flex;
+        font-size: 0.9rem;
+        justify-content: space-between;
+        transition: 0.3s;
+        &:hover {
+          background-color: #f8f8f8;
+        }
+        .item-id {
+          width: 100px;
+          margin-right: 20px;
+        }
+        .item-title {
+          margin-right: 20px;
+        }
+        .item-date {
+          width: 60px;
+          margin-left: auto;
+        }
+      }
+
+      .form-check-input {
+        position: absolute;
+        left: 6px;
+        top: 2px;
+        &:checked {
+          & + .form-check-label {
+            background-color: #efeee5;
+            &:hover {
+              background-color: #f8f8f8;
+            }
+          }
+        }
+      }
+    }
+  }
+}

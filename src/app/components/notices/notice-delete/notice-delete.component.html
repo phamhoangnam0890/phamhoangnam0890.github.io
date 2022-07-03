@@ -1,0 +1,76 @@
+<app-common-nav></app-common-nav>
+<section class="container s-notices">
+    <nav class="nav-breadcrumb">
+        <ul>
+            <li><a [routerLink]="['/']"><span class="material-icons">home</span></a></li>
+            <li><a [routerLink]="['/notices']">お知らせ</a></li>
+            <li><a [routerLink]="['/notices/info/'+noticeId]">詳細</a></li>
+            <li><a [routerLink]="['/notices/delete/'+noticeId]">削除確認</a></li>
+        </ul>
+    </nav>
+
+    <div class="card" *ngIf="rakutenNews">
+        <div class="card-body">
+            <div class="alert alert-danger">
+                以下のお知らせを削除してもよろしいですか？
+            </div>
+            <div class="alert alert-danger" *ngIf="errorMessage">
+                {{errorMessage}}
+            </div>
+            <table class="table table-common-info">
+                <tbody>
+                    <tr>
+                        <th>ステータス</th>
+                        <td>
+                            <span *ngIf="rakutenNews.status === '1'"
+                                class="badge bg-primary">{{rakutenNews.statusName}}</span>
+                            <span *ngIf="rakutenNews.status === '-1'"
+                                class="badge bg-secondary">{{rakutenNews.statusName}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>内容</th>
+                        <td>
+                            <ng-container
+                                *ngFor="let p of this.commonService.splitLines(rakutenNews.content); let i = index">
+                                {{p}}
+                                <br *ngIf=" i < this.commonService.splitLines(rakutenNews.content).length - 1">
+                            </ng-container>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>最終更新日時</th>
+                        <td>{{rakutenNews.updatedAt && rakutenNews.updatedAt.seconds ?
+                            this.commonService.secondsToJpDateTime(rakutenNews.updatedAt.seconds, '/') : ''}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card-footer double">
+            <a disableOnLoading="a" class="btn btn-outline-secondary"
+                [routerLink]="['/notices/info/'+noticeId]">キャンセル</a>
+            <button disableOnLoading="button" class="btn btn-danger" type="button" (click)="onDelete()">削除</button>
+        </div>
+    </div>
+
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="modalDeleteComplete" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">お知らせ　削除完了</h5>
+            </div>
+            <div class="modal-body message">
+                削除完了いたしました。一覧へ遷移します。
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    一覧画面へ移動
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

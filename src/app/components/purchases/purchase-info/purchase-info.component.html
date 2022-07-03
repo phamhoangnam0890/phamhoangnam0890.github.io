@@ -1,0 +1,106 @@
+<app-common-nav></app-common-nav>
+<section class="container s-purchase" *ngIf="this.purchaseData">
+    <nav class="nav-breadcrumb">
+        <ul>
+            <li><a [routerLink]="['/']"><span class="material-icons">home</span></a></li>
+            <li><a [routerLink]="['/purchases']">仕入管理 一覧</a></li>
+            <li><a [routerLink]="['/purchases/info/aaa']">詳細：{{this.purchaseData.itemNo}}</a></li>
+        </ul>
+    </nav>
+
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-common-info">
+                <tbody>
+                    <tr>
+                        <th>商品コード</th>
+                        <td>{{this.purchaseData.itemNo}}</td>
+                    </tr>
+                    <tr>
+                        <th>品名</th>
+                        <td>{{this.purchaseData.itemName}}</td>
+                    </tr>
+                    <tr>
+                        <th>数量</th>
+                        <td>{{this.purchaseData.quantity|number}}</td>
+                    </tr>
+                    <tr>
+                        <th>仕入元</th>
+                        <td>{{this.purchaseData.supplier}}</td>
+                    </tr>
+                    <tr>
+                        <th>仕入日</th>
+                        <td>{{this.purchaseData.date}}</td>
+                    </tr>
+                    <tr>
+                        <th>仕入担当</th>
+                        <td>{{this.purchaseData.userName}}</td>
+                    </tr>
+                    <tr>
+                        <th>仕入れ元画像</th>
+                        <td>
+                            <div class="d-purchase-image-thumbnail-list">
+                                <ng-container *ngFor="let image of images; let idx = index">
+                                    <img [src]="image.src" class="img-thumbnail" (click)="openImageView(idx)"
+                                        [alt]="idx">
+                                </ng-container>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>ステータス</th>
+                        <td>
+                            <ng-container *ngIf="this.purchaseData.status == 1"><span class="text-primary">仕入れ中</span>
+                            </ng-container>
+                            <ng-container *ngIf="this.purchaseData.status == 2">仕入れ済み
+
+                                <button class="btn btn-sm btn-dark ms-3" (click)="statuChangeCheck()">取消</button>
+                            </ng-container>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="modalStatusChangeCheck" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">ステータス変更　確認</h5>
+            </div>
+            <div class="modal-body message">
+                ステータス「仕入済み」を取り消しし、<br>「仕入中」に変更しますか？
+            </div>
+            <div class="modal-footer double">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    キャンセル
+                </button>
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal" (click)="statuChange()">
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalStatusChangeComplete" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">ステータス変更　完了</h5>
+            </div>
+            <div class="modal-body message">
+                ステータスを「仕入中」に変更しました。
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    閉じる
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

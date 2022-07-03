@@ -1,0 +1,37 @@
+$header-height: 55px;
+$side-bar-width: 220px;
+$min-width: 1280px;
+$border-color: #e4e9f2;
+
+@mixin hover {
+  &:hover {
+    transition: 0.3s;
+    cursor: pointer;
+    opacity: 0.8;
+  }
+}
+
+@mixin no-hover {
+  &:hover {
+    cursor: auto;
+    opacity: 1;
+  }
+}
+
+@mixin flex {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+}
+
+@mixin flex-sb {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin nowrap() {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

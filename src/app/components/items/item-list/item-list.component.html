@@ -1,0 +1,196 @@
+<app-common-nav></app-common-nav>
+<section class="container s-items">
+    <div class="list-link-create">
+        <div class="wrap-row">
+            <button *ngIf="commonService.getUserRole() === 'admin'" disableOnLoading="button" disabled="true" class="btn btn-danger">CSV Upload</button>&nbsp;
+            <a *ngIf="commonService.getUserRole() === 'admin'" disableOnLoading="a" [routerLink]="['./create']" class="btn btn-primary">+New</a>
+
+        </div>
+    </div>
+    <nav class="nav-breadcrumb">
+        <ul>
+            <li><a [routerLink]="['/']"><span class="material-icons">home</span></a></li>
+            <li><a [routerLink]="['/items']">Products</a></li>
+        </ul>
+    </nav>
+
+    <form [formGroup]="searchForm" (ngSubmit)="getProducts(1, selectedSorting)">
+        <div class="card card-common-search" formGroupName="basic">
+            <div class="card-body d-search block">
+                <div class="search-item-wrap">
+                    <div class="wrap-row">
+                        <div class="search-item">
+                            <label>Keyword</label>
+                            <input formControlName="keyword" type="text" class="form-control">
+                        </div>
+                        <div class="search-item">
+                            <label>Category</label>
+                            <select formControlName="category" class="form-select">
+                                <option [value]="0">ー</option>
+                                <option *ngFor="let c of categories"
+                                        [value]="c.categoryId">{{c.categoryName}}</option>
+                            </select>
+                        </div>
+
+                        <div class="search-item status-open">
+                            <label>Status</label>
+                            <div class="d-status-order">
+                                <div class="form-check">
+                                    <input formControlName="status" class="form-check-input" type="checkbox"
+                                           id="status">
+                                    <label class="form-check-label" for="status">OPEN</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="search-btn ms-5">
+                            <button disableOnLoading="button" type="submit"
+                                    class="btn btn-dark btn-search ms-2">
+                                Search
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!--                <div class="search-item-wrap">-->
+                <!--                    <div class="wrap-row">-->
+                <!--                        <div class="search-item">-->
+                <!--                            <label>仕入元</label>-->
+                <!--                            <select formControlName="supplier" class="form-select">-->
+                <!--                                <option [value]="0">ー</option>-->
+                <!--                                <option *ngFor="let p of purchasing" [value]="p.purchasingId">{{p.purchasingName}}-->
+                <!--                                </option>-->
+                <!--                            </select>-->
+                <!--                        </div>-->
+                <!--                        <div class="search-item">-->
+                <!--                            <label>楽天イベント</label>-->
+                <!--                            <select formControlName="rakutenEventType" class="form-select">-->
+                <!--                                <option [value]="0">ー</option>-->
+                <!--                                <option *ngFor="let re of rakutenEvents" [value]="re.rakutenEventId">-->
+                <!--                                    {{re.rakutenEventName}}</option>-->
+                <!--                            </select>-->
+                <!--                        </div>-->
+
+                <!--                        <div class="search-item status-open" >-->
+                <!--                            <label>Status</label>-->
+                <!--                            <div class="d-status-order">-->
+                <!--                                <div class="form-check">-->
+                <!--                                    <input formControlName="status" class="form-check-input" type="checkbox"-->
+                <!--                                           id="status">-->
+                <!--                                    <label class="form-check-label" for="status">公開</label>-->
+                <!--                                </div>-->
+                <!--                            </div>-->
+                <!--                        </div>-->
+                <!--                        <div class="search-btn ms-5">-->
+                <!--                            <button disableOnLoading="button" type="button" (click)="getProducts(1, selectedSorting)"-->
+                <!--                                    class="btn btn-dark btn-search ms-2">-->
+                <!--                                検索-->
+                <!--                            </button>-->
+                <!--                        </div>-->
+                <!--                    </div>-->
+                <!--                </div>-->
+            </div>
+        </div>
+    </form>
+
+    <div class="list-total" *ngIf="pager?.total && products.data && products.data.length > 0">
+        合計：{{pager.total}}
+    </div>
+
+    <div class="alert alert-secondary alert-sm text-center"
+         *ngIf="!products || (products.data && products.data.length == 0)">
+        該当する商品は見つかりませんでした。
+    </div>
+
+    <table class="table table-common-list table-item-list"
+           *ngIf="products && products.data && products.data.length > 0">
+        <thead>
+        <tr>
+            <th>
+                <div class="d-icon-sort"><span>Product ID</span>
+                    <i class="material-icons icon-sort" (click)="onSortingUpdated(sortings[0])">{{sortings[0].asc ==
+                    true ? 'expand_more' :
+                        'expand_less'}}</i>
+                </div>
+            </th>
+            <th>Product name</th>
+            <th>
+                <div class="d-icon-sort"><span>Input Price</span>
+                </div>
+            </th>
+            <th>
+                <div class="d-icon-sort"><span>Price</span>
+                    <i class="material-icons icon-sort" (click)="onSortingUpdated(sortings[1])">{{sortings[1].asc ==
+                    true ? 'expand_more' :
+                        'expand_less'}}</i>
+                </div>
+            </th>
+            <th>
+                <div class="d-icon-sort"><span>Quantity</span>
+                </div>
+            </th>
+            <th>
+                <div class="d-icon-sort"><span>Latest updated</span>
+                    <i class="material-icons icon-sort" (click)="onSortingUpdated(sortings[2])">{{sortings[2].asc ==
+                    true ? 'expand_more' :
+                        'expand_less'}}</i>
+                </div>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let p of products.data; let i = index" [routerLink]="['/items/info/'+p.productItemId]">
+            <td>{{p.productId}}</td>
+            <td>
+                <div class="mb-1">
+                    <span class="badge bg-secondary me-2">{{p.categoryName}}</span>
+                    <span class="badge bg-danger" *ngIf="p.status =='PRI'">※</span>
+                </div>
+                <div>{{p.productName}}</div>
+            </td>
+            <td style="text-align: center">{{p.inputPrice | number}}</td>
+            <td style="text-align: center">{{p.price | number}}</td>
+            <td style="text-align: right">{{p.quantity}}</td>
+            <td style="text-align: right">{{p.updatedAt && p.updatedAt.seconds ? this.commonService.secondsToJpDateFormatWithSeparator(p.updatedAt.seconds,
+                '/') : ''}}</td>
+
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="pager" *ngIf="products && products.data && products.data.length > 0">
+        <ng-container *ngIf="pager.currentPage !== 1; else blank_td">
+            <span class="material-icons" (click)="getProducts(pager.currentPage - 1, this.selectedSorting)">
+                arrow_back_ios
+            </span>
+        </ng-container>
+
+        <div class="current" *ngIf="pager.currentPage === 1; else planB">
+            1〜{{pager.currentPage * pager.totalItems < pager.pageSize ? pager.totalItems :
+            pager.pageSize}}（Total {{pager.total}}）
+        </div>
+
+        <ng-template #planB>
+            <div class="current" *ngIf="pager.currentPage === pager.totalPages; else planC">
+                {{((pager.currentPage - 1) * pager.pageSize) + 1}}〜{{pager.total}}（Total {{pager.total}}）
+            </div>
+        </ng-template>
+
+        <ng-template #planC>
+            <div class="current">{{((pager.currentPage - 1) * pager.pageSize) + 1}}〜{{pager.currentPage *
+            pager.pageSize}}（Total {{pager.total}}）
+            </div>
+        </ng-template>
+
+        <ng-template #blank_td>
+            <div class="current">
+            </div>
+        </ng-template>
+
+        <ng-container *ngIf="pager.currentPage < pager.totalPages; else blank_td">
+                    <span class="material-icons" (click)="getProducts(pager.currentPage + 1, this.selectedSorting)">
+                        arrow_forward_ios
+                    </span>
+        </ng-container>
+    </div>
+
+</section>

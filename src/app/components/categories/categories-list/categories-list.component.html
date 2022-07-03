@@ -1,0 +1,71 @@
+<app-common-nav></app-common-nav>
+<section class="container s-items">
+    <div class="list-link-create">
+        <a *ngIf="commonService.getUserRole() === 'admin'" disableOnLoading="a" [routerLink]="['./create']" class="btn btn-primary">+New</a>
+    </div>
+    <nav class="nav-breadcrumb">
+        <ul>
+            <li><a [routerLink]="['/']"><span class="material-icons">home</span></a></li>
+            <li><a [routerLink]="['/categories']">Categories</a></li>
+        </ul>
+    </nav>
+
+    <div class="list-total" *ngIf="pager?.total && categories.data && categories.data.length > 0">
+        Total：{{pager.total}}
+    </div>
+
+    <div class="alert alert-secondary alert-sm text-center"
+         *ngIf="!categories || (categories.data && categories.data.length == 0)">
+        該当する商品は見つかりませんでした。
+    </div>
+
+    <table class="table table-common-list table-item-list"
+           *ngIf="categories && categories.data && categories.data.length > 0">
+        <thead>
+        <tr>
+            <th>Category Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let c of categories.data; let i = index" [routerLink]="['/categories/info/'+c.categoryId]">
+            <td>{{c.categoryName}}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="pager" *ngIf="categories && categories.data && categories.data.length > 0">
+        <ng-container *ngIf="pager.currentPage !== 1; else blank_td">
+            <span class="material-icons" (click)="getCategories(pager.currentPage - 1, null)">
+                arrow_back_ios
+            </span>
+        </ng-container>
+
+        <div class="current" *ngIf="pager.currentPage === 1; else planB">
+            1〜{{pager.currentPage * pager.totalItems < pager.pageSize ? pager.totalItems :
+            pager.pageSize}}（Total {{pager.total}}）
+        </div>
+
+        <ng-template #planB>
+            <div class="current" *ngIf="pager.currentPage === pager.totalPages; else planC">
+                {{((pager.currentPage - 1) * pager.pageSize) + 1}}〜{{pager.total}}（Total {{pager.total}}）
+            </div>
+        </ng-template>
+
+        <ng-template #planC>
+            <div class="current">{{((pager.currentPage - 1) * pager.pageSize) + 1}}〜{{pager.currentPage *
+            pager.pageSize}}（Total {{pager.total}}）
+            </div>
+        </ng-template>
+
+        <ng-template #blank_td>
+            <div class="current">
+            </div>
+        </ng-template>
+
+        <ng-container *ngIf="pager.currentPage < pager.totalPages; else blank_td">
+                    <span class="material-icons" (click)="getCategories(pager.currentPage + 1, null)">
+                        arrow_forward_ios
+                    </span>
+        </ng-container>
+    </div>
+</section>

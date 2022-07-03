@@ -1,0 +1,29 @@
+@import "./style";
+
+.s-system-settings {
+  h1 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+}
+
+.modal {
+  // 楽天市場
+  .table-system-edit-rakuten {
+    width: 550px;
+    margin: 0 auto;
+    tbody {
+      tr {
+        th {
+          width: 180px;
+        }
+        td {
+          input[type="date"] {
+            width: 170px;
+          }
+        }
+      }
+    }
+  }
+}

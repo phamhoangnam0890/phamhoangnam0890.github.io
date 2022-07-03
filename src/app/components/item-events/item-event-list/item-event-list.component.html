@@ -1,0 +1,106 @@
+<app-common-nav></app-common-nav>
+<section class="container s-item-events">
+    <div class="list-link-create">
+        <a disableOnLoading="a" [routerLink]="['./create']" class="btn btn-primary">新規登録</a>
+    </div>
+    <nav class="nav-breadcrumb">
+        <ul>
+            <li><a [routerLink]="['/']"><span class="material-icons">home</span></a></li>
+            <li><a [routerLink]="['/item-events/rakuten']">楽天イベント管理</a></li>
+        </ul>
+    </nav>
+    <form [formGroup]="searchForm" (ngSubmit)="getEvents(1)">
+        <div class="card card-common-search" formGroupName="basic">
+            <div class="card-body d-search">
+                <div class="search-item-wrap">
+                    <div class="wrap-row">
+                        <div class="search-item">
+                            <label>イベント名</label>
+                            <input formControlName="eventName" type="text" class="form-control">
+                        </div>
+                        <!-- <div class="search-item">
+                            <label>イベント開始月</label>
+                            <input formControlName="eventMonth" type="month" class="form-control">
+                        </div>
+                        <div class="search-item period">
+                            <label>期間</label>
+                            <div class="d-period">
+                                <input formControlName="dateStart" type="date" class="form-control">
+                                <span>〜</span>
+                                <input formControlName="dateEnd" type="date" class="form-control">
+                            </div>
+                        </div> -->
+                        <div class="search-btn ms-5">
+                            <button disableOnLoading="button" type="submit" class="btn btn-dark btn-search ms-2">
+                                検索
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="alert alert-secondary alert-sm text-center"
+        *ngIf="!rakutenEvents || (rakutenEvents && rakutenEvents.length == 0)">
+        該当する楽天イベントは見つかりませんでした。
+    </div>
+
+    <table class="table table-common-list table-item-event-list" *ngIf="rakutenEvents && rakutenEvents.length > 0">
+        <thead>
+            <tr>
+                <th>イベント名</th>
+                <th>イベント開始月</th>
+                <th>開始期間ー終了期間</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let re of this.rakutenEvents; let i = index" [routerLink]="['./info/'+ re.rakutenEventId]">
+                <td>{{re.rakutenEventName}}</td>
+                <td>{{re.startYearMonth}}</td>
+                <td>
+                    {{this.commonService.secondsToJpDateFormatWithSeparator(re.periodStart.seconds,
+                    '/')}} 〜
+                    {{this.commonService.secondsToJpDateFormatWithSeparator(re.periodEnd.seconds,
+                    '/')}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <div class="pager" *ngIf="this.rakutenEvents && this.rakutenEvents.length > 0">
+        <ng-container *ngIf="pager.currentPage !== 1; else blank_td">
+            <span class="material-icons" (click)="getEvents(pager.currentPage - 1)">
+                arrow_back_ios
+            </span>
+        </ng-container>
+
+        <div class="current" *ngIf="pager.currentPage === 1; else planB">
+            1〜{{pager.currentPage * pager.totalItems < pager.pageSize ? pager.totalItems :
+                pager.pageSize}}件（全{{pager.totalItems}}件） </div>
+
+                <ng-template #planB>
+                    <div class="current" *ngIf="pager.currentPage === pager.totalPages; else planC">
+                        {{((pager.currentPage - 1) * pager.pageSize) + 1}}〜{{pager.total}}件（全{{pager.totalItems}}件）
+                    </div>
+                </ng-template>
+
+                <ng-template #planC>
+                    <div class="current">{{((pager.currentPage - 1) * pager.pageSize) + 1}}〜{{pager.currentPage *
+                        pager.pageSize}}件（全{{pager.totalItems}}件）
+                    </div>
+                </ng-template>
+
+                <ng-template #blank_td>
+                    <div class="current">
+                    </div>
+                </ng-template>
+
+                <ng-container *ngIf="pager.currentPage < pager.totalPages; else blank_td">
+                    <span class="material-icons" (click)="getEvents(pager.currentPage + 1)">
+                        arrow_forward_ios
+                    </span>
+                </ng-container>
+        </div>
+
+</section>

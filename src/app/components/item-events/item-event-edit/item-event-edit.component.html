@@ -1,0 +1,82 @@
+<app-common-nav></app-common-nav>
+<section class="container s-item-events">
+
+    <nav class="nav-breadcrumb">
+        <ul>
+            <li><a [routerLink]="['/']"><span class="material-icons">home</span></a></li>
+            <li><a [routerLink]="['/item-events/rakuten']">楽天イベント管理</a></li>
+            <li *ngIf="rakutenEvent"><a
+                    [routerLink]="['/item-events/rakuten/edit/'+this.itemEventId]">編集：{{rakutenEvent.rakutenEventName}}</a>
+            </li>
+        </ul>
+    </nav>
+    <form [formGroup]="itemEventInputForm" (ngSubmit)="onSave()" class="needs-validation" novalidate>
+
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-common-form" formGroupName="basic">
+                    <tbody>
+                        <tr>
+                            <th>イベント名<span class="required">必須</span></th>
+                            <td>
+                                <input type="text" class="form-control" formControlName="eventName" required>
+                                <div class="invalid-feedback">
+                                    ※イベント名は必須入力項目です。
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>イベント開始月<span class="required">必須</span></th>
+                            <td><input type="month" class="form-control" formControlName="eventMonth" required>
+                                <div class="invalid-feedback">
+                                    ※イベント開始月は必須入力項目です。
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>開始期間<span class="required">必須</span></th>
+                            <td><input type="date" class="form-control" formControlName="dateStart" required>
+                                <div class="invalid-feedback">
+                                    ※開始期間は必須入力項目です。
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>終了期間<span class="required">必須</span></th>
+                            <td><input type="date" class="form-control" formControlName="dateEnd" required>
+                                <div class="invalid-feedback">
+                                    ※終了期間は必須入力項目です。
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card-footer double">
+                <a disableOnLoading="a" class="btn btn-outline-secondary"
+                    [routerLink]="['/item-events/rakuten/info/'+this.itemEventId]">キャンセル</a>
+                <button disableOnLoading="button" class="btn btn-primary" type="submit">保存</button>
+            </div>
+        </div>
+    </form>
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="modalSaveComplete" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">楽天イベント 保存完了</h5>
+            </div>
+            <div class="modal-body message">
+                保存いたしました。詳細画面へ遷移します。
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    閉じる
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

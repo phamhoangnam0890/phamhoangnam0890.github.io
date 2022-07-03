@@ -1,0 +1,46 @@
+<header class="header">
+    <div class="title" [routerLink]="['/']">
+        <!--        <img src="/assets/img/img-logo.svg" alt="在庫管理システム" class="img-logo">-->
+        <span># D E M O</span>
+    </div>
+</header>
+<section class="s-login">
+
+
+    <div class="card">
+        <div class="card-header">
+            <h1 class="title"> L O G I N</h1>
+        </div>
+        <div class="card-body">
+            <div *ngIf="errorMessage != ''" class="alert alert-danger alert-sm mb-4">
+                {{errorMessage}}
+            </div>
+
+            <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="needs-validation" novalidate>
+                <div class="d-login">
+                    <div class="login-input">
+                        <div class="d-login-input">
+                            <label>ID</label>
+                            <input type="text" class="form-control" formControlName="loginId" required>
+                            <div class="invalid-feedback">
+                                ※ID is required.
+                            </div>
+                        </div>
+                        <div class="d-login-input">
+                            <label>Password</label>
+                            <input type="password" class="form-control" formControlName="password" required>
+                            <div class="invalid-feedback">
+                                ※Password is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="login-submit">
+                        <button disableOnLoading="button" type="submit" class="btn btn-primary btn-login-submit">O K
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</section>

@@ -1,0 +1,31 @@
+<app-common-nav></app-common-nav>
+<section class="container s-items">
+    <nav class="nav-breadcrumb">
+        <ul>
+            <li><a [routerLink]="['/']"><span class="material-icons">home</span></a></li>
+            <li><a [routerLink]="['/categories']">Categories</a></li>
+            <li><a [routerLink]="['/categories/create']">Category Create</a></li>
+        </ul>
+    </nav>
+    <div class="card">
+        <div class="card-body">
+            <h2>Category Info</h2>
+            <table class="table table-common-form">
+                <tbody>
+                <tr>
+                    <th>Category Name<span class="required">※</span></th>
+                    <td>
+                        {{categoryName}}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer double">
+            <a disableOnLoading="a" class="btn btn-outline-secondary" [routerLink]="['/categories']">Categories</a>
+            <button *ngIf="commonService.getUserRole() === 'admin'" disableOnLoading="button" class="btn btn-primary"
+                    [routerLink]="['/categories/edit/' + this.categoryId]" type="button">Edit
+            </button>
+        </div>
+    </div>
+</section>

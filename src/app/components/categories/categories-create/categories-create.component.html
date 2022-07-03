@@ -1,0 +1,59 @@
+<app-common-nav></app-common-nav>
+<section class="container s-items">
+    <nav class="nav-breadcrumb">
+        <ul>
+            <li><a [routerLink]="['/']"><span class="material-icons">home</span></a></li>
+            <li><a [routerLink]="['/categories']">Categories</a></li>
+            <li><a [routerLink]="['/categories/create']">Category Create</a></li>
+        </ul>
+    </nav>
+    <form [formGroup]="itemInputForm" class="needs-validation" novalidate>
+
+        <div class="card">
+            <div class="card-body" formGroupName="basic">
+                <h2>Category Info</h2>
+                <table class="table table-common-form">
+                    <tbody>
+                    <tr>
+                        <th>Category Name<span class="required">※</span></th>
+                        <td>
+                            <input type="text" class="form-control" required formControlName="categoryName">
+                            <div class="invalid-feedback">
+                                ※Category Name is required.
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer double">
+                <a disableOnLoading="a" class="btn btn-outline-secondary" [routerLink]="['/categories']">Cancel</a>
+                <button disableOnLoading="button" class="btn btn-primary" (click)="onSave()" type="button">Create
+                </button>
+            </div>
+        </div>
+    </form>
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="modalSaveComplete" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">新規登録　完了</h5>
+            </div>
+            <div class="modal-body message">
+                新規登録いたしました。
+            </div>
+            <div class="modal-footer double">
+                <span>店舗商品登録を行わない</span>
+                <div class="shop-list">
+                    <button type="button" class="btn btn-outline-secondary mb-3" data-bs-dismiss="modal">
+                        詳細へ移動する
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,177 @@
+<app-common-nav></app-common-nav>
+<section class="container s-users">
+    <nav class="nav-breadcrumb">
+        <ul>
+            <li><a [routerLink]="['/']"><span class="material-icons">home</span></a></li>
+            <li><a [routerLink]="['/users']">Users</a></li>
+            <li><a [routerLink]="['/users']">Edit</a></li>
+        </ul>
+    </nav>
+    <form [formGroup]="userInputForm" (ngSubmit)="onSave()" class="needs-validation" novalidate>
+
+        <div class="card">
+            <div class="card-body" formGroupName="basic">
+                <div class="alert alert-danger alert-sm mb-4" *ngIf="errorMessage && errorMessage != ''">
+                    {{errorMessage}}
+                </div>
+
+                <table class="table table-common-form" *ngIf="userData">
+                    <tbody>
+                    <tr>
+                        <th>User name<span class="required">※</span></th>
+                        <td>
+                            <input type="text" class="form-control w-text" required formControlName="userName">
+                            <div class="invalid-feedback">
+                                ※User name is required.
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Email<span class="required">※</span></th>
+                        <td>
+                            <input type="email" class="form-control w-text" required formControlName="email">
+                            <div class="invalid-feedback">
+                                ※Email is required.
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Role<span class="required">※</span></th>
+                        <td class="form-control w-25">
+                            <select formControlName="roleId" class="form-select">
+                                <option [value]="'0'">-</option>
+                                <option *ngFor="let r of roles" [value]="r.roleId">{{r.roleName}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>ID<span class="required">※</span></th>
+                        <td>
+                            <input type="text" class="form-control w-text" required formControlName="loginId">
+                            <div class="invalid-feedback">
+                                ※ID is required.
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Password</th>
+                        <td>
+                            <button disableOnLoading="button" class="btn btn-outline-dark btn-sm" type="button"
+                                    (click)="onPasswordChange()">Change
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer double">
+                <a disableOnLoading="a" class="btn btn-outline-secondary"
+                   [routerLink]="['/users/info/'+userId]">Cancel</a>
+                <button disableOnLoading="button" class="btn btn-primary" type="submit">OK</button>
+            </div>
+        </div>
+    </form>
+</section>
+<!-- Modal -->
+<div class="modal fade" id="modalPasswordChange" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered moda-pass">
+        <div class="modal-content">
+            <form [formGroup]="passwordInputForm" (ngSubmit)="onPasswordSet()" class="needs-validation" novalidate>
+                <div class="modal-header">
+                    <h5 class="modal-title">Password Change</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="info">
+                        <ul>
+                            <li>Min: 6 characters</li>
+                        </ul>
+                    </div>
+                    <table class="table table-common-form" formGroupName="basic">
+                        <tbody>
+                        <tr>
+                            <th>Current Password<span class="required">※</span></th>
+                            <td>
+                                <input class="form-control w-text" required type="password"
+                                       formControlName="currenPassword" minlength="6">
+                                <div class="invalid-feedback">
+                                    ※Current password is required.
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>New Password<span class="required">※</span></th>
+                            <td>
+                                <input class="form-control w-text" required type="password"
+                                       formControlName="newPassword1" minlength="6">
+                                <div class="invalid-feedback">
+                                    ※New Password is required.
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>New Password Confirm<span class="required">※</span></th>
+                            <td>
+                                <input class="form-control w-text" required type="password"
+                                       formControlName="newPassword2" minlength="6">
+                                <div class="invalid-feedback">
+                                    ※New Password Confirm is required.
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer double">
+                    <button disableOnLoading="button" type="button" class="btn btn-outline-secondary"
+                            data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+                    <button disableOnLoading="button" class="btn btn-dark" type="submit"
+                            [disabled]="this.passwordInputForm.invalid
+                    || this.passwordInputForm.controls['basic']['controls']['newPassword1'].value !== this.passwordInputForm.controls['basic']['controls']['newPassword2'].value">
+                        OK
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalPasswordChangeComplete" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Password Change Successfully</h5>
+            </div>
+            <div class="modal-body message">
+                New Password has been set.
+            </div>
+            <div class="modal-footer">
+                <button disableOnLoading="button" type="button" class="btn btn-outline-secondary"
+                        data-bs-dismiss="modal">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalSaveComplete" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">User Edit Successfully</h5>
+            </div>
+            <div class="modal-body message">
+                Return to User Info screen.
+            </div>
+            <div class="modal-footer">
+                <button disableOnLoading="button" type="button" class="btn btn-outline-secondary"
+                        data-bs-dismiss="modal">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,273 @@
+<app-common-nav></app-common-nav>
+<section class="container s-items">
+    <nav class="nav-breadcrumb">
+        <ul>
+            <li><a [routerLink]="['/']"><span class="material-icons">home</span></a></li>
+            <li><a [routerLink]="['/items']">Products</a></li>
+            <li><a [routerLink]="['/items/create']">Product Create</a></li>
+        </ul>
+    </nav>
+    <form [formGroup]="itemInputForm" class="needs-validation" novalidate>
+
+        <div class="card">
+            <div class="card-body" formGroupName="basic">
+                <h2>Product Info</h2>
+                <table class="table table-common-form">
+                    <tbody>
+                    <tr>
+                        <th>Category<span class="required">※</span></th>
+                        <td>
+                            <select class="form-select" required
+                                    formControlName="categoryId">
+                                <option *ngFor="let c of categories" [value]="c.categoryId">{{c.categoryName}}
+                                </option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Product ID<span class="required">※</span></th>
+                        <td>
+                            <input type="text" class="form-control" required formControlName="productId">
+                            <div class="invalid-feedback">
+                                ※Product ID is required.
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Product name<span class="required">※</span></th>
+                        <td>
+                            <input type="text" class="form-control" required formControlName="productItemName">
+                            <div class="invalid-feedback">
+                                ※Product name is required.
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Input Price<span class="required">必須</span></th>
+                        <td>
+                            <input type="number" class="form-control w-price" required
+                                   formControlName="inputPrice">
+                            <div class="invalid-feedback">
+                                ※Input Price is required.
+                            </div>
+                            <span class="ms-2">VND</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>URL</th>
+                        <td>
+
+                            <input type="text" class="form-control" placeholder="https://"
+                                   formControlName="url">
+                            <br>
+                            <qrcode *ngIf="itemInputForm.controls.basic.controls.url" [qrdata]="this.setupQrData()"
+                                    [width]="256"
+                                    [errorCorrectionLevel]="'M'"></qrcode>
+
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <th>画像</th>
+                        <td>
+
+                            <div class="info">
+                                <ul>
+                                    <li>※Max: 20</li>
+                                    <li>※「jpg」Only</li>
+                                    <li>※2MB Limit per image</li>
+                                </ul>
+                            </div>
+
+                            <table class="table table-bordered table-item-create-image-list">
+                                <tbody cdkDropList (cdkDropListDropped)="drop($event)">
+                                <tr *ngFor="let image of this.images; let idx = index">
+                                    <th cdkDrag>
+                                        <div>{{idx + 1}}</div>
+                                        <span class="material-icons">
+                            density_medium
+                        </span>
+                                    </th>
+
+                                    <td *ngIf="image.src == ''">※No image</td>
+                                    <td *ngIf="image.src != ''">
+                                        <img [src]="image.src" class="img-thumbnail"
+                                             (click)="openImageView(idx)" [alt]="idx">
+                                    </td>
+                                    <td>
+                                        <div class="d-flex-sb">
+
+                                            <button disableOnLoading="button" type="button"
+                                                    class="btn btn-sm btn-dark me-4"
+                                                    (click)="onImgUpload(idx)">Upload
+                                            </button>
+                                            <button disableOnLoading="button" type="button"
+                                                    class="btn btn-sm btn-danger" (click)="imageDelete(idx)">Remove
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+
+                                <tfoot>
+                                <tr>
+                                    <td colspan="3">
+                                        <button disableOnLoading="button" class="btn btn-primary btn-sm"
+                                                type="button" (click)="imageAdd()">
+                                            ＋New
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Description<span class="required">必須</span></th>
+                        <td>
+                            <textarea class="form-control" rows="8" required formControlName="description"></textarea>
+                            <div class="invalid-feedback">
+                                ※Description is required.
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Price (i.TAX)<span class="required">必須</span></th>
+                        <td>
+                            <div class="d-unit">
+                                <input type="number" class="form-control w-price" value="0" min="0" required
+                                       formControlName="priceTax">
+                                <span>VND</span>
+                                <div class="invalid-feedback">
+                                    ※Price (i.TAX) is required.
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Quantity<span class="required">必須</span></th>
+                        <td>
+                            <div class="d-unit">
+                                <input type="number" class="form-control w-price" value="0" min="0" required
+                                       formControlName="quantity">
+                                <span>VND</span>
+                                <div class="invalid-feedback">
+                                    ※Quantity is required.
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>Input Date</th>
+                        <td>
+                            <div class="d-unit">
+                                <label for="start_time_date" class="mark-wrapper">
+                                    <input formControlName="inputDate" type="date" id="inputDate"
+                                           class="form-control" [min]="this.today|date:'yyyy-MM-dd'"
+                                           (change)="changeStart()">
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer double">
+                <a disableOnLoading="a" class="btn btn-outline-secondary" [routerLink]="['/items']">Products</a>
+                <button disableOnLoading="button" class="btn btn-primary" (click)="onSave()" type="button">Create
+                </button>
+            </div>
+        </div>
+    </form>
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="modalSaveComplete" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Window</h5>
+            </div>
+            <div class="modal-body message">
+                Item Registration Done
+            </div>
+            <!--            <div class="modal-footer double">-->
+            <!--                <span>店舗商品登録を行う</span>-->
+            <!--                <div class="shop-list">-->
+            <!--                    <button type="button" class="btn btn-dark mb-3" data-bs-dismiss="modal" (click)="onMoveShop(1)">-->
+            <!--                        Yahoo!ショッピング-->
+            <!--                    </button>-->
+            <!--                    <button type="button" class="btn btn-dark mb-3" data-bs-dismiss="modal" (click)="onMoveShop(2)">-->
+            <!--                        楽天市場-->
+            <!--                    </button>-->
+            <!--                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal" (click)="onMoveShop(3)">-->
+            <!--                        BASE-->
+            <!--                    </button>-->
+            <!--                </div>-->
+            <!--            </div>-->
+            <div class="modal-footer double">
+                <span></span>
+                <div class="shop-list">
+                    <button type="button" class="btn btn-outline-secondary mb-3" data-bs-dismiss="modal">
+                        Finish
+                    </button>
+                    <!--                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="onMoveCreate()">-->
+                    <!--                        続けて商品を登録する-->
+                    <!--                    </button>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalUpload" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                画像{{this.activeIndex + 1}} アップロード
+                <button disableOnLoading="button" type="button" class="btn-close btn-close-white"
+                        data-bs-dismiss="modal" id="modalUploadClose"></button>
+            </div>
+            <div class="modal-body text-center">
+                <ng-container *ngIf="!imgUpTrimFlg">
+                    <label class="message-upload" (dragover)="dragOver($event)" (drop)="dropFileSelected($event)"
+                           [for]="'image' + 1">
+                        <p>
+                            <strong>画像{{this.activeIndex + 1}}をアップロードしてください</strong>
+                        </p>
+                        <ul class="ul-message-upload">
+                            <li>※画像の拡張子は「jpg」「gif」のみ</li>
+                            <li>※推奨サイズ：幅・高さ600px（正方形）、2MB以下</li>
+                        </ul>
+                        <span class="btn btn-dark mt-4">アップロード</span>
+                    </label>
+                    <input (change)="onFileSelected($event)" type="file" accept=".jpg,.gif" id="file-image"
+                           class="d-none" [id]="'image' + 1">
+                </ng-container>
+                <ng-container *ngIf="imgUpTrimFlg">
+                    <!-- // トリミング画像 -->
+                    <div class="cropper-area">
+                        <img [src]="this.base64StringRaw" class="img-thumbnail" loading="lazy"
+                             *ngIf="this.base64StringRaw" (load)="imageLoaded($event)">
+                    </div>
+                </ng-container>
+            </div>
+            <div class="modal-footer" [class.double]="imgUpTrimFlg">
+                <button type="button" disableOnLoading="button" class="btn btn-outline-secondary"
+                        data-bs-dismiss="modal">キャンセル
+                </button>
+                <ng-container *ngIf="imgUpTrimFlg">
+                    <button disableOnLoading="button" class="btn btn-danger" type="button"
+                            (click)="imgTrimmingDelete()">画像を削除
+                    </button>
+                    <button disableOnLoading="button" class="btn btn-primary" type="button"
+                            (click)="imgTrimmingFix()">トリミングを保存
+                    </button>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>

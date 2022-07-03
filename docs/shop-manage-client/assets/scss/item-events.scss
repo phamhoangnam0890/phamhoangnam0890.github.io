@@ -1,0 +1,134 @@
+@import "./style";
+
+.s-item-events {
+  position: relative;
+  .table-item-event-list {
+    thead {
+      tr {
+        th {
+          &:nth-child(1) {
+            width: auto;
+          }
+          &:nth-child(2) {
+            width: 180px;
+          }
+          &:nth-child(3) {
+            width: 250px;
+          }
+        }
+      }
+    }
+  }
+  .table-common-form {
+    input[type="month"],
+    input[type="date"] {
+      max-width: 200px;
+    }
+  }
+  .table-item-event-info {
+    margin-bottom: 40px;
+  }
+
+  .item-event-update {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .table-item-list-entry {
+    thead {
+      th {
+        &:nth-child(1) {
+          width: 140px;
+        }
+        &:nth-child(2) {
+          width: auto;
+        }
+        &:nth-child(3) {
+          width: 130px;
+        }
+        &:nth-child(4) {
+          width: 100px;
+        }
+      }
+    }
+    tbody {
+      tr {
+        td {
+          &:nth-child(3),
+          &:nth-child(4) {
+            text-align: right;
+          }
+        }
+      }
+    }
+  }
+}
+
+#modalEntryItemList {
+  .modal-body {
+    .scroll {
+      max-height: 60vh;
+      overflow-y: scroll;
+    }
+
+    .table-item-list-entry-modal {
+      margin-bottom: 0;
+      th,
+      td {
+        &:nth-child(1) {
+          width: 40px;
+        }
+        &:nth-child(2) {
+          width: 140px;
+        }
+        &:nth-child(3) {
+          width: auto;
+        }
+        &:nth-child(4) {
+          width: 80px;
+        }
+        &:nth-child(5) {
+          width: 200px;
+        }
+        &:nth-child(6) {
+          width: 120px;
+        }
+        &:nth-child(7) {
+          width: 100px;
+        }
+      }
+      tbody {
+        tr {
+          &.checked {
+            background-color: #eaf8ff;
+          }
+          td {
+            vertical-align: middle;
+            &:nth-child(1) {
+              padding: 0;
+              .form-check-label {
+                padding: 0.5rem 0.5rem;
+                display: block;
+                height: 67px;
+              }
+            }
+            &:nth-child(2) {
+              vertical-align: top;
+            }
+
+            &:nth-child(4),
+            &:nth-child(6) {
+              text-align: right;
+              padding-right: 15px;
+            }
+            &:nth-child(7) {
+              text-align: right;
+              padding-right: 20px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

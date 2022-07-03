@@ -1,0 +1,48 @@
+<app-common-nav></app-common-nav>
+<section class="container s-notices">
+    <nav class="nav-breadcrumb">
+        <ul>
+            <li><a [routerLink]="['/']"><span class="material-icons">home</span></a></li>
+            <li><a [routerLink]="['/notices']">お知らせ</a></li>
+            <li><a [routerLink]="['/notices/info/'+ noticeId]">詳細</a></li>
+        </ul>
+    </nav>
+    <div class="card">
+        <div class="card-body" *ngIf="rakutenNews">
+            <h2 class="d-flex-sb"><span>詳細</span>
+                <a class="btn btn-dark btn-sm" [routerLink]="['/notices/edit/'+ noticeId]">編集</a>
+            </h2>
+            <table class="table table-common-info">
+                <tbody>
+                    <tr>
+                        <th>ステータス</th>
+                        <td>
+                            <span *ngIf="rakutenNews.status === '1'"
+                                class="badge bg-primary">{{rakutenNews.statusName}}</span>
+                            <span *ngIf="rakutenNews.status === '-1'"
+                                class="badge bg-secondary">{{rakutenNews.statusName}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>内容</th>
+                        <td>
+                            <ng-container
+                                *ngFor="let p of this.commonService.splitLines(rakutenNews.content); let i = index">
+                                {{p}}
+                                <br *ngIf=" i < this.commonService.splitLines(rakutenNews.content).length - 1">
+                            </ng-container>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>最終更新日時</th>
+                        <td>{{rakutenNews.updatedAt && rakutenNews.updatedAt.seconds ?
+                            this.commonService.secondsToJpDateTime(rakutenNews.updatedAt.seconds, '/') : ''}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <a *ngIf="rakutenNews" class="btn btn-link text-danger mt-4" [routerLink]="['/notices/delete/'+ noticeId]">削除</a>
+
+
+</section>

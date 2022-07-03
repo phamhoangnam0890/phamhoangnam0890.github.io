@@ -1,0 +1,105 @@
+<!--<app-common-nav></app-common-nav>-->
+<!--<section class="container s-items">-->
+<!--    <nav class="nav-breadcrumb">-->
+<!--        <ul>-->
+<!--            <li><a [routerLink]="['/']"><span class="material-icons">home</span></a></li>-->
+<!--            <li><a [routerLink]="['/items']">商品一覧</a></li>-->
+<!--            <li><a [routerLink]="['/items/info/'+itemId]">詳細：商品名</a></li>-->
+<!--            <li><a [routerLink]="['/items/edit/rakuten/'+itemId]">編集：楽天市場</a></li>-->
+<!--        </ul>-->
+<!--    </nav>-->
+<!--    <form [formGroup]="itemInputForm" (ngSubmit)="onSave()" class="needs-validation" novalidate>-->
+<!--        <div class="card">-->
+<!--            <div class="card-body">-->
+<!--                <h2 class="d-title mb-3">-->
+<!--                    <span>楽天市場</span>-->
+<!--                    <div class="right-btns">-->
+<!--                        <button type="button" class="btn btn-sm btn-dark">反映</button>-->
+<!--                    </div>-->
+<!--                </h2>-->
+
+<!--                <table class="table table-common-form" formGroupName="basic">-->
+<!--                    <tbody>-->
+<!--                        <tr>-->
+<!--                            <th>商品管理番号</th>-->
+<!--                            <td>-->
+<!--                                <div>No</div>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                            <th>商品番号</th>-->
+<!--                            <td>static text</td>-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                            <th>商品名</th>-->
+<!--                            <td>static text</td>-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                            <th>価格<span class="required">必須</span></th>-->
+<!--                            <td>-->
+<!--                                <input type="text" class="form-control w-price" required formControlName="price">-->
+<!--                                <span class="ms-2">円</span>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                            <th>倉庫指定<span class="required">必須</span></th>-->
+<!--                            <td>-->
+<!--                                <input type="radio" formControlName="stock" [value]="false" id="pageClose"-->
+<!--                                    class="normal-radio-input">-->
+<!--                                <label class="normal-radio" for="pageClose">-->
+<!--                                    <span>公開</span></label>-->
+<!--                                <input type="radio" formControlName="stock" [value]="true" id="pageOpen"-->
+<!--                                    class="normal-radio-input">-->
+<!--                                <label class="normal-radio" for="pageOpen">-->
+<!--                                    <span>入れる</span></label>-->
+
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                            <th>PC用商品説明文<span class="required">必須</span></th>-->
+<!--                            <td>-->
+<!--                                <div class="info icon">-->
+<!--                                    <div>全角87文字以内。URLにはHTTPSのみ入力可。HTTPは入力不可。<br>-->
+<!--                                        レベル1のHTMLタグは使用可能です。※RMSドキュメント参照-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <textarea class="form-control" required formControlName="note"-->
+<!--                                    [class.error]="this.itemInputForm.get('basic').get('note').value.length >87"></textarea>-->
+<!--                                <div class="invalid-feedback">-->
+<!--                                    ※PC用商品説明文は必須入力項目です。-->
+<!--                                </div>-->
+<!--                                <div class="count-byte"-->
+<!--                                    [class.over]="this.itemInputForm.get('basic').get('note').value.length >87">-->
+<!--                                    {{this.itemInputForm.get("basic").get("note").value.length}} / 87文字-->
+<!--                                </div>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                    </tbody>-->
+<!--                </table>-->
+<!--            </div>-->
+<!--            <div class="card-footer double">-->
+<!--                <a class="btn btn-outline-secondary" [routerLink]="['/items/info/'+itemId]">詳細へ戻る</a>-->
+<!--                <button class="btn btn-primary" type="submit">保存</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </form>-->
+<!--</section>-->
+
+<!--&lt;!&ndash; Modal &ndash;&gt;-->
+<!--<div class="modal fade" id="modalSaveComplete" tabindex="-1" aria-hidden="true">-->
+<!--    <div class="modal-dialog modal-dialog-centered">-->
+<!--        <div class="modal-content">-->
+<!--            <div class="modal-header">-->
+<!--                <h5 class="modal-title">保存完了</h5>-->
+<!--            </div>-->
+<!--            <div class="modal-body message">-->
+<!--                楽天市場のデータを保存しました。-->
+<!--            </div>-->
+<!--            <div class="modal-footer">-->
+<!--                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">-->
+<!--                    閉じる-->
+<!--                </button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->

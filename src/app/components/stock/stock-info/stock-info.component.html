@@ -1,0 +1,248 @@
+<app-common-nav></app-common-nav>
+<section class="container s-stock">
+    <nav class="nav-breadcrumb">
+        <ul>
+            <li><a [routerLink]="['/']"><span class="material-icons">home</span></a></li>
+            <li><a [routerLink]="['/stock']">在庫管理 一覧</a></li>
+            <li *ngIf="stockInfo"><a [routerLink]="['/stock']">詳細：{{stockInfo.productName}}</a></li>
+        </ul>
+    </nav>
+    <div class="card">
+        <div class="card-body" *ngIf="stockInfo">
+            <h2 class="d-title">
+                <span>詳細</span>
+            </h2>
+            <table class="table table-common-info">
+                <tbody>
+                    <tr>
+                        <th>カテゴリ</th>
+                        <td>{{stockInfo.categoryName}}</td>
+                    </tr>
+                    <tr>
+                        <th>商品名（タイトル）</th>
+                        <td>{{stockInfo.productName}}</td>
+                    </tr>
+                    <tr>
+                        <th>仕入れ単価</th>
+                        <td>{{stockInfo.purchaseUnitPrice | number}} {{stockInfo.currencyName}}</td>
+                    </tr>
+                    <tr>
+                        <th>仕入れ元</th>
+                        <td>{{stockInfo.supplierName}}</td>
+                    </tr>
+                    <tr>
+                        <th>仕入れ元製品URL</th>
+                        <td>
+                            <a [href]="stockInfo.supplierProductUrl" target="_blank"
+                                class="link-line">{{stockInfo.supplierProductUrl}}</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>製品詳細</th>
+                        <td>
+                            <ng-container
+                                *ngFor="let p of this.commonService.splitLines(stockInfo.productDetails); let i = index">
+                                {{p}}
+                                <br *ngIf=" i < this.commonService.splitLines(stockInfo.productDetails).length - 1">
+                            </ng-container>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>在庫数</th>
+                        <td>合計：{{stockInfo.rakutenNum + stockInfo.yahooNum + stockInfo.baseNum}}<br>
+                            楽天市場：{{stockInfo.rakutenNum}}　Yahoo!ショッピング：{{stockInfo.yahooNum}}　Base：{{stockInfo.baseNum}}
+                            <div class="mt-2">
+                                <button class="btn btn-sm btn-dark" (click)="onStockEdit()">在庫調整</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>販売単価（税別）</th>
+                        <td>{{stockInfo.sellingPrice | number}}円</td>
+                    </tr>
+                    <tr>
+                        <th>在庫管理の写真</th>
+                        <td>
+                            <div class="d-item-image-thumbnail-list">
+                                <ng-container *ngFor="let image of images; let idx = index">
+                                    <img [src]="image.src" class="img-thumbnail" (click)="openImageView(idx)"
+                                        [alt]="idx">
+                                </ng-container>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>最終更新日時</th>
+                        <td *ngIf="stockInfo.updatedAt">{{commonService.secondsToJpDateTime(stockInfo.updatedAt.seconds,
+                            '/')}}</td>
+                    </tr>
+                    <tr>
+                        <th>累計販売数</th>
+                        <td>{{stockInfo.totalSales}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="card-body">
+            <h2>販売履歴</h2>
+            <table class="table table-stock-info-record-buy">
+                <thead>
+                    <tr>
+                        <th>購入日時</th>
+                        <th>数量</th>
+                        <th>性別</th>
+                        <th>年齢</th>
+                        <th>複数購入</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr [routerLink]="['/orders/info/1']">
+                        <td>2022/03/05 10:22</td>
+                        <td>3</td>
+                        <td>男性</td>
+                        <td>30</td>
+                        <td>なし</td>
+                    </tr>
+                    <tr [routerLink]="['/orders/info/1']">
+                        <td>2022/03/15 10:22</td>
+                        <td>2</td>
+                        <td>女性</td>
+                        <td>30</td>
+                        <td>あり</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="card-body">
+            <h2>料金変動</h2>
+            <table class="table table-stock-info-record-price">
+                <thead>
+                    <tr>
+                        <th>変動日時</th>
+                        <th>金額</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>ー
+                            <!-- 初回登録は、変動日時は不要 -->
+                        </td>
+                        <td>3,022円</td>
+                    </tr>
+                    <tr>
+                        <td>2022/03/05 10:22</td>
+                        <td>
+                            <div class="d-stock-info-record-price">
+                                <span>3,019円</span>
+                                <span class="material-icons text-danger">
+                                    arrow_drop_down
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2022/03/05 10:22</td>
+                        <td>
+                            <div class="d-stock-info-record-price">
+                                <span>3,024円</span>
+                                <span class="material-icons text-primary">
+                                    arrow_drop_up
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="card-body">
+            <h2>仕入履歴</h2>
+            <table class="table table-stock-info-record-purchase">
+                <thead>
+                    <tr>
+                        <th>仕入日</th>
+                        <th>数量</th>
+                        <th>仕入元</th>
+                        <th>仕入担当</th>
+                        <th>ステータス</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2022/02/28</td>
+                        <td>30</td>
+                        <td>仕入元AA</td>
+                        <td>大和田</td>
+                        <td>仕入済み</td>
+                    </tr>
+                    <tr>
+                        <td>2022/03/28</td>
+                        <td>30</td>
+                        <td>仕入元AA</td>
+                        <td>大和田</td>
+                        <td><span class="text-primary">仕入中</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div class="card-footer right">
+            <a class="btn btn-dark" [routerLink]="['/stock/edit/' + itemId]">編集</a>
+        </div>
+    </div>
+
+    <a class="btn btn-link text-danger mt-4" [routerLink]="['/stock/delete/'+ itemId]">削除</a>
+
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="modalStockEdit" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">在庫調整</h5>
+            </div>
+            <div class="modal-body">
+                <table class="table table-common-form table-stock-edit-modal">
+                    <tbody>
+                        <tr>
+                            <th class="pe-2">楽天市場</th>
+                            <td>
+                                <input type="number" class="form-control" value="1" min="0" required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="pe-2">Yahoo!ショッピング</th>
+                            <td>
+                                <input type="number" class="form-control" value="3" min="0" required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="pe-2">BASE</th>
+                            <td>
+                                <input type="number" class="form-control" value="4" min="0" required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>残数</th>
+                            <td><span>X</span></td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>合計</th>
+                            <td><strong>X</strong></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="modal-footer double">
+                <button disableOnLoading="button" type="button" class="btn btn-outline-secondary"
+                    data-bs-dismiss="modal">
+                    キャンセル
+                </button>
+                <button disableOnLoading="button" class="btn btn-primary" type="submit">反映</button>
+            </div>
+        </div>
+    </div>
+</div>

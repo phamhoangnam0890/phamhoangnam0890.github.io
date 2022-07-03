@@ -1,0 +1,109 @@
+@import "./style";
+
+.s-dashboard {
+  max-width: calc(100% - 400px);
+
+  .g-dashboard {
+    display: grid;
+    grid-template-columns: 24% 24% 24% 28%;
+    grid-template-areas:
+      " item-opened month-orders  ..  ranking-category"
+      " notice notice notice ranking-category"
+      " recent-orders recent-orders recent-orders  ranking-category "
+      " rakuten-design rakuten-design rakuten-design  ranking-category ";
+    .text-big {
+      font-size: 40px;
+    }
+    .card {
+      margin-right: 20px;
+      margin-bottom: 30px;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    // 公開中の商品数
+    .item-opened {
+      grid-area: item-opened;
+    }
+
+    // 今月の注文件数
+    .month-orders {
+      grid-area: month-orders;
+    }
+
+    // お知らせ
+    .notice {
+      grid-area: notice;
+    }
+
+    // 最近の注文
+    .recent-orders {
+      grid-area: recent-orders;
+    }
+    // 楽天デザイン
+    .rakuten-design {
+      grid-area: rakuten-design;
+      .d-title {
+        padding-right: 20px;
+      }
+    }
+
+    // カテゴリ別ランキング
+    .ranking-category {
+      grid-area: ranking-category;
+      padding-left: 30px;
+      .card {
+        margin-right: 0px;
+        margin-left: 0px;
+      }
+      .list-group {
+        .list-group-item {
+          span {
+            font-weight: bold;
+            width: 25px;
+            display: inline-block;
+          }
+        }
+      }
+    }
+  }
+
+  &.warning {
+    h2 {
+      font-size: 21px;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    p {
+      font-size: 0.95rem;
+    }
+    small {
+      font-size: 0.85rem;
+    }
+    .label-rakuten {
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      .required {
+        background-color: #e91a1a;
+        font-weight: normal;
+        font-size: 11px;
+        color: #fff;
+        padding: 2px 6px 0px;
+        border-radius: 2px;
+        margin-left: 10px;
+      }
+    }
+    .card-footer {
+      .btn {
+        min-width: 100px;
+        margin-left: 20px;
+      }
+    }
+  }
+}

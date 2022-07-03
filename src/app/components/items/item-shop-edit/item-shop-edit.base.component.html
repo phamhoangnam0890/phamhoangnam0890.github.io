@@ -1,0 +1,85 @@
+<app-common-nav></app-common-nav>
+<section class="container s-items">
+    <nav class="nav-breadcrumb">
+        <ul>
+            <li><a [routerLink]="['/']"><span class="material-icons">home</span></a></li>
+            <li><a [routerLink]="['/items']">商品一覧</a></li>
+            <li><a [routerLink]="['/items/info/'+itemId]">詳細：商品名</a></li>
+            <li><a [routerLink]="['/items/edit/rakuten/'+itemId]">編集：BASE</a></li>
+        </ul>
+    </nav>
+    <form [formGroup]="itemInputForm" (ngSubmit)="onSave()" class="needs-validation" novalidate>
+        <div class="card">
+            <div class="card-body">
+                <h2 class="d-title">
+                    <span>BASE</span>
+                    <small
+                        *ngIf="baseItemInfo && baseItemInfo.reflectionAt && baseItemInfo.reflectionAt.seconds">最終反映日時：2022/04/04
+                        10:00</small>
+                    <button disableOnLoading="button" class="btn btn-sm btn-dark" (click)="reflect()">反映</button>
+                </h2>
+
+                <div class="alert alert-danger alert-sm" *ngIf="errorMessage">
+                    <p>{{errorMessage}}</p>
+                </div>
+
+                <table class="table table-common-form" formGroupName="basic">
+                    <tbody>
+                        <tr>
+                            <th>商品説明</th>
+                            <td>
+                                <textarea class="form-control" formControlName="detail"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>価格(税込)<span class="required">必須</span></th>
+                            <td>
+                                <input type="number" class="form-control w-price" step=".01" formControlName="price"
+                                    required>
+                                <span class="label-unit">円</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>表示</th>
+                            <td>
+                                <input type="radio" formControlName="visible" [value]="1" id="visible1"
+                                    class="normal-radio-input">
+                                <label class="normal-radio" for="visible1">
+                                    <span>表示</span></label>
+
+                                <input type="radio" formControlName="visible" [value]="0" id="visible2"
+                                    class="normal-radio-input">
+                                <label class="normal-radio" for="visible2">
+                                    <span>非表示</span></label>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer double">
+                <a disableOnLoading="a" class="btn btn-outline-secondary"
+                    [routerLink]="['/items/info/'+itemId]">詳細へ戻る</a>
+                <button disableOnLoading="button" class="btn btn-primary" type="submit">保存</button>
+            </div>
+        </div>
+    </form>
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="modalSaveComplete" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">保存完了</h5>
+            </div>
+            <div class="modal-body message">
+                BASEのデータを保存しました。
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    閉じる
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

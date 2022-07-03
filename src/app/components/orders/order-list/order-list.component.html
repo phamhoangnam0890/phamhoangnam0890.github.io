@@ -1,0 +1,122 @@
+<app-common-nav></app-common-nav>
+<section class="container s-orders">
+    <div class="list-link-create">
+        <a [routerLink]="['./create']" class="btn btn-primary">新規登録</a>
+    </div>
+    <nav class="nav-breadcrumb">
+        <ul>
+            <li><a [routerLink]="['/']"><span class="material-icons">home</span></a></li>
+            <li><a [routerLink]="['/orders']">注文管理</a></li>
+        </ul>
+    </nav>
+    <form [formGroup]="searchForm">
+        <div class="card card-common-search" formGroupName="basic">
+            <div class="card-body d-search">
+
+                <div class="search-item-wrap">
+                    <div class="wrap-row">
+                        <div class="search-item">
+                            <label>ユーザー名</label>
+                            <input formControlName="userName" type="text" class="form-control">
+                        </div>
+                        <div class="search-item">
+                            <label>商品タイトル</label>
+                            <input formControlName="itemName" type="text" class="form-control">
+                        </div>
+                        <div class="search-item">
+                            <label>購入店舗</label>
+
+                            <select formControlName="shopId" class="form-select">
+                                <option value="0">ー</option>
+                                <option value="1">Yahoo!ショッピング</option>
+                                <option value="2">楽天市場</option>
+                                <option value="3">BASE</option>
+                            </select>
+                        </div>
+
+                        <div class="search-btn ms-5">
+                            <button type="submit" class="btn btn-dark btn-search ms-2">
+                                検索
+                            </button>
+                        </div>
+                    </div>
+                    <div class="wrap-row mt-2">
+                        <div class="search-item period">
+                            <label>購入日</label>
+                            <div class="d-period">
+                                <input formControlName="dateStart" type="date" class="form-control">
+                                <span>〜</span>
+                                <input formControlName="dateEnd" type="date" class="form-control">
+                            </div>
+                        </div>
+                        <div class="search-item status-order">
+                            <label>ステータス</label>
+                            <div class="d-status-order">
+                                <div class="form-check">
+                                    <input formControlName="status1" class="form-check-input" type="checkbox"
+                                        id="status1" value="1">
+                                    <label class="form-check-label" for="status1">受注</label>
+                                </div>
+                                <div class="form-check">
+                                    <input formControlName="status2" class="form-check-input" type="checkbox"
+                                        id="status2" value="2">
+                                    <label class="form-check-label" for="status2">発送済み</label>
+                                </div>
+                                <div class="form-check">
+                                    <input formControlName="status3" class="form-check-input" type="checkbox"
+                                        id="status3" value="3">
+                                    <label class="form-check-label" for="status3">キャンセル</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <table class="table table-common-list">
+        <thead>
+            <tr>
+                <th>No</th>
+                <td>ユーザー名</td>
+                <th>商品タイトル</th>
+                <th>購入店舗</th>
+                <th>購入数</th>
+                <th>購入日</th>
+                <th>ステータス</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of [1]" [routerLink]="['./info/'+item]">
+                <td>{{item}}</td>
+                <td>大和田あかね</td>
+                <td>商品名</td>
+                <td>Yahoo!ショッピング</td>
+                <td>2</td>
+                <td>2022/03/05</td>
+                <td><span class="text-primary">受注</span></td>
+            </tr>
+            <tr *ngFor="let item of [2]" [routerLink]="['./info/'+item]">
+                <td>{{item}}</td>
+                <td>大和田あかね</td>
+                <td>商品名</td>
+                <td>Yahoo!ショッピング</td>
+                <td>2</td>
+                <td>2022/03/05</td>
+                <td><span class="text-danger">キャンセル</span></td>
+            </tr>
+            <tr *ngFor="let item of [3,4,5,6,7,8,9]" [routerLink]="['./info/'+item]">
+                <td>{{item}}</td>
+                <td>大和田あかね</td>
+                <td>商品名</td>
+                <td>Yahoo!ショッピング</td>
+                <td>2</td>
+                <td>2022/03/05</td>
+                <td>発送済み</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+</section>

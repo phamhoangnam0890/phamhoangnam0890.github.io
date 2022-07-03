@@ -1,0 +1,224 @@
+<app-common-nav></app-common-nav>
+<section class="container s-stock">
+    <nav class="nav-breadcrumb">
+        <ul>
+            <li><a [routerLink]="['/']"><span class="material-icons">home</span></a></li>
+            <li><a [routerLink]="['/stock']">在庫管理 一覧</a></li>
+            <li><a [routerLink]="['/stock/info/1']">詳細：商品名</a></li>
+            <li><a [routerLink]="['/stock/edit/2']">編集</a></li>
+        </ul>
+    </nav>
+    <form [formGroup]="itemInputForm" (ngSubmit)="onSave()" class="needs-validation" novalidate>
+
+        <div class="card" *ngIf="stockInfo">
+            <div class="card-body">
+                <table class="table table-common-form" formGroupName="basic">
+                    <tbody>
+                        <tr>
+                            <th>カテゴリ<span class="required">必須</span></th>
+                            <td>
+                                <select class="form-select" required formControlName="category">
+                                    <option *ngFor="let c of categories" [value]="c.categoryId">{{c.categoryName}}
+                                    </option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>商品名（タイトル）<span class="required">必須</span></th>
+                            <td>
+                                <input type="text" class="form-control" required formControlName="itemName">
+                                <div class="invalid-feedback">
+                                    ※商品名（タイトル）は必須入力項目です。
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>仕入れ単価<span class="required">必須</span></th>
+                            <td>
+                                <div class="d-item-buy-price">
+                                    <input type="number" class="form-control w-price" step="0.01" value="0" min="0"
+                                        required formControlName="purchasePrice">
+                                    <div class="invalid-feedback">
+                                        ※仕入れ単価は必須入力項目です。
+                                    </div>
+                                    <select class="form-select buy-price-unit" formControlName="purchasePriceUnit">
+                                        <option *ngFor="let c of currencies" [value]="c.currencyId">{{c.currencyName}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>仕入れ元<span class="required">必須</span></th>
+                            <td>
+                                <select class="form-select" required formControlName="purchaseNo">
+                                    <option *ngFor="let p of purchasing" [value]="p.purchasingId">{{p.purchasingName}}
+                                    </option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>仕入れ元製品URL</th>
+                            <td>
+                                <input type="url" class="form-control" placeholder="https://"
+                                    formControlName="purchaseUrl">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>製品詳細<span class="required">必須</span></th>
+                            <td>
+                                <textarea class="form-control" rows="8" required formControlName="note"></textarea>
+                                <div class="invalid-feedback">
+                                    ※製品詳細は必須入力項目です。
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>在庫数</th>
+                            <td>合計：{{stockInfo.rakutenNum + stockInfo.yahooNum + stockInfo.baseNum}}<br>
+                                楽天市場：{{stockInfo.rakutenNum}}　Yahoo!ショッピング：{{stockInfo.yahooNum}}　Base：{{stockInfo.baseNum}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>販売単価（税別）<span class="required">必須</span></th>
+                            <td>
+                                <div class="d-unit">
+                                    <input type="number" class="form-control w-price" value="0" min="0" required
+                                        formControlName="buyUnitPrice">
+                                    <span>円</span>
+                                    <div class="invalid-feedback">
+                                        ※販売単価（税別）は必須入力項目です。
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>在庫管理の写真</th>
+                            <td>
+                                <table class="table table-bordered table-item-create-image-list">
+                                    <tbody cdkDropList (cdkDropListDropped)="drop($event)">
+                                        <tr *ngFor="let image of this.images; let idx = index">
+                                            <th cdkDrag>
+                                                <div>{{idx + 1}}</div>
+                                                <span class="material-icons">
+                                                    density_medium
+                                                </span>
+                                            </th>
+                                            <td *ngIf="image.src == ''">※画像なし</td>
+                                            <td *ngIf="image.src != ''">
+                                                <img [src]="image.src" class="img-thumbnail"
+                                                    (click)="openImageView(idx)" [alt]="idx">
+                                            </td>
+                                            <td>
+                                                <div class="d-flex-sb">
+
+                                                    <button disableOnLoading="button" type="button"
+                                                        class="btn btn-sm btn-dark me-4"
+                                                        (click)="onImgUpload(idx)">アップロード
+                                                    </button>
+                                                    <button disableOnLoading="button" type="button"
+                                                        class="btn btn-sm btn-danger" (click)="imageDelete(idx)">削除
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="3">
+                                                <button disableOnLoading="button" class="btn btn-primary btn-sm"
+                                                    type="button" (click)="imageAdd()">
+                                                    ＋画像枠追加
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>累計販売数</th>
+                            <td>{{stockInfo.totalSales}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer double">
+                <a class="btn btn-outline-secondary" [routerLink]="['/stock/info/' + itemId]">キャンセル</a>
+                <button disableOnLoading="button" class="btn btn-primary" type="submit">保存</button>
+            </div>
+        </div>
+    </form>
+</section>
+
+
+<!-- Modal -->
+<div class="modal fade" id="modalUpload" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                画像{{this.activeIndex + 1}} アップロード
+                <button disableOnLoading="button" type="button" class="btn-close btn-close-white"
+                    data-bs-dismiss="modal" id="modalUploadClose"></button>
+            </div>
+            <div class="modal-body text-center">
+                <ng-container *ngIf="!imgUpTrimFlg">
+                    <label class="message-upload" (dragover)="dragOver($event)" (drop)="dropFileSelected($event)"
+                        [for]="'image' + 1">
+                        <p>
+                            <strong>画像{{this.activeIndex + 1}}をアップロードしてください</strong>
+                        </p>
+                        <ul class="ul-message-upload">
+                            <li>※画像の拡張子は「jpg」「gif」のみ</li>
+                            <li>※推奨サイズ：幅・高さ600px（正方形）、2MB以下</li>
+                        </ul>
+                        <span class="btn btn-dark mt-4">アップロード</span>
+                    </label>
+                    <input (change)="onFileSelected($event)" type="file" accept=".jpg,.gif" id="file-image"
+                        class="d-none" [id]="'image' + 1">
+                </ng-container>
+                <ng-container *ngIf="imgUpTrimFlg">
+                    <!-- // トリミング画像 -->
+                    <div class="cropper-area">
+                        <img [src]="this.base64StringRaw" class="img-thumbnail" loading="lazy"
+                            *ngIf="this.base64StringRaw" (load)="imageLoaded($event)">
+                    </div>
+                </ng-container>
+            </div>
+            <div class="modal-footer" [class.double]="imgUpTrimFlg">
+                <button type="button" disableOnLoading="button" class="btn btn-outline-secondary"
+                    data-bs-dismiss="modal">キャンセル
+                </button>
+                <ng-container *ngIf="imgUpTrimFlg">
+                    <button disableOnLoading="button" class="btn btn-danger" type="button"
+                        (click)="imgTrimmingDelete()">画像を削除
+                    </button>
+                    <button disableOnLoading="button" class="btn btn-primary" type="button"
+                        (click)="imgTrimmingFix()">トリミングを保存
+                    </button>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="modalSaveComplete" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">在庫編集　保存完了</h5>
+            </div>
+            <div class="modal-body message">
+                保存いたしました。詳細画面へ遷移します。
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    詳細へ移動
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

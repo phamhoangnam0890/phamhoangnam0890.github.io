@@ -1,0 +1,19 @@
+syntax = "proto3";
+package products;
+import "google/protobuf/empty.proto";
+option go_package = "github.com/phamhoangnam0890/product-management-service/app/proto/products";
+
+service CommonService {
+
+  rpc RolesList (google.protobuf.Empty) returns (RolesListResponse) {
+  }
+}
+
+message RolesListResponse {
+  repeated RoleData data = 1;
+}
+
+message RoleData {
+  int64 role_id = 1;
+  string role_name = 2;
+}

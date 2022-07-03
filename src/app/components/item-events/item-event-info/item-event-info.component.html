@@ -1,0 +1,172 @@
+<app-common-nav></app-common-nav>
+<section class="container s-item-events">
+
+    <nav class="nav-breadcrumb">
+        <ul>
+            <li><a [routerLink]="['/']"><span class="material-icons">home</span></a></li>
+            <li><a [routerLink]="['/item-events/rakuten']">楽天イベント管理</a></li>
+            <li *ngIf="rakutenEvent"><a
+                    [routerLink]="['/item-events/rakuten/info/'+this.itemEventId]">詳細：{{rakutenEvent.rakutenEventName}}</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="card" *ngIf="rakutenEvent">
+        <div class="card-body">
+            <h2 class="d-flex-sb"><span>詳細</span>
+                <a class="btn btn-dark btn-sm" [routerLink]="['/item-events/rakuten/edit/'+this.itemEventId]">編集</a>
+            </h2>
+            <table class="table table-common-form table-item-event-info">
+                <tbody>
+                    <tr>
+                        <th>イベント名</th>
+                        <td>
+                            {{rakutenEvent.rakutenEventName}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>イベント開始月</th>
+                        <td>{{rakutenEvent.startYearMonth}}</td>
+                    </tr>
+                    <tr>
+                        <th>開始期間</th>
+                        <td>{{rakutenEvent.periodStart.seconds ?
+                            this.commonService.secondsToJpDateFormatWithSeparator(rakutenEvent.periodStart.seconds, '/')
+                            : ''}}</td>
+                    </tr>
+                    <tr>
+                        <th>終了期間</th>
+                        <td>{{rakutenEvent.periodEnd.seconds ?
+                            this.commonService.secondsToJpDateFormatWithSeparator(rakutenEvent.periodEnd.seconds, '/') :
+                            ''}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+            <h2 class="d-flex-sb mb-3"><span>商品一覧（{{itemData ? itemData.length : 0}}）</span>
+                <button disableOnLoading="button" type="button" class="btn btn-dark btn-sm"
+                    (click)="onEntryItemList()">新規登録
+                </button>
+            </h2>
+
+            <div class="item-event-update">
+                <div class="me-3" *ngIf="rakutenEvent.reflectionAt && rakutenEvent.reflectionAt.seconds">
+                    更新日時：{{this.commonService.secondsToJpDateTime2(rakutenEvent.reflectionAt.seconds)}}</div>
+                <button disableOnLoading="button" type="button" (click)="onRakutenReflection()"
+                    class="btn btn-secondary btn-sm me-1">反映
+                </button>
+            </div>
+
+            <div class="alert alert-secondary alert-sm" *ngIf="(itemData && itemData.length < 1) || !itemData">
+                商品は登録されていません。
+            </div>
+
+            <table class="table table-common-list table-item-list-entry" *ngIf="itemData && itemData.length > 0">
+                <thead>
+                    <tr>
+                        <th>商品コード</th>
+                        <th>商品名（タイトル）</th>
+                        <th>既存の在庫数</th>
+                        <th>在庫数</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of itemData; let i = index" [routerLink]="['./item/'+item.productItemId]">
+                        <td>
+                            <div>{{item.productId}}</div>
+                            <div>
+                                <span>aaa</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="mb-1">
+                                <span class="badge bg-secondary me-2">{{item.categoryName}}</span>
+                            </div>
+                            <div>{{item.productItemName}}</div>
+                        </td>
+                        <td>{{item.stockInventory}}</td>
+                        <td>{{item.stock}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+    <a disableOnLoading="a" *ngIf="rakutenEvent" class="btn btn-link text-danger mt-4"
+        [routerLink]="['/item-events/rakuten/delete/'+this.itemEventId]">削除</a>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalEntryItemList" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">商品一覧　新規登録</h5>
+                </div>
+                <div class="modal-body">
+                    <!-- <div class="alert alert-secondary alert-sm">
+                        該当する商品は見つかりませんでした。
+                    </div> -->
+                    <table class="table table-common-list table-item-list-entry-modal">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>商品コード</th>
+                                <th>商品名（タイトル）</th>
+                                <th>料金</th>
+                                <th>イベント</th>
+                                <th>既存の在庫数</th>
+                                <th>在庫数</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="scroll">
+                        <table class="table table-common-list table-item-list-entry-modal">
+                            <tbody>
+                                <tr *ngFor="let rid of this.registerItemData; let idx = index"
+                                    [class.checked]="rid.isChecked" (click)="onChanged(idx,$event)">
+                                    <td>
+                                        <label class="form-check-label" [for]="'item' + idx">
+                                            <input class="form-check-input" type="checkbox" [id]="'item' + idx"
+                                                [checked]="rid.isChecked">
+                                        </label>
+                                    </td>
+                                    <td>{{rid.productId}}</td>
+                                    <td>
+                                        <div class="mb-1">
+                                            <span class="badge bg-secondary me-2">ピアス</span>
+                                        </div>
+                                        <div>{{rid.productName}}</div>
+                                    </td>
+                                    <td>{{rid.price|number}}</td>
+                                    <td>
+                                        <input type="text" class="form-control event-label">
+                                    </td>
+                                    <td>
+                                        {{rid.stockInventory}}
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control num-stock" [(ngModel)]="rid.inputStock"
+                                            disableOnLoading="input" (change)="changeStock(idx)" min="0"
+                                            [max]="rid.stockInventory">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer double">
+                    <button id="closeButton" disableOnLoading="button" type="button" class="btn btn-outline-secondary"
+                        data-bs-dismiss="modal">
+                        閉じる
+                    </button>
+                    <button [disabled]="updateFlg == false" disableOnLoading="button" type="button" class="btn btn-dark"
+                        (click)="onSubmit()">
+                        登録
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>

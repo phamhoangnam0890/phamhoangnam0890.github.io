@@ -1,0 +1,18 @@
+version: "3.3"
+
+services:
+  shop-manage-client:
+    container_name: shop-manage-client
+    build:
+      context: ..
+      dockerfile: ./docker/Dockerfile
+    volumes:
+      - ".:/app"
+      - "/app/node_modules"
+      # - '/var/www/html:/var/www/html/'
+    environment:
+      - TZ=Asia/Tokyo
+      - NG_CLI_ANALYTICS='false'
+    ports:
+      - "4200:4200"
+    command: bash -c "npm rebuild node-sass && npm install && ng build --prod --base-href ./ --output-path=./public"

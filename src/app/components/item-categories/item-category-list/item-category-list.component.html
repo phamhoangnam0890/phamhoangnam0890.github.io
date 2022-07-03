@@ -1,0 +1,37 @@
+<app-common-nav></app-common-nav>
+<section class="container s-item-categories">
+    <nav class="nav-breadcrumb">
+        <ul>
+            <li><a [routerLink]="['/']"><span class="material-icons">home</span></a></li>
+            <li><a [routerLink]="['/item-categories/rakuten']">楽天カテゴリ管理</a></li>
+        </ul>
+    </nav>
+
+
+    <table class="table table-common-list table-item-categories-list"
+        *ngIf="shopCategories && shopCategories.length > 0">
+        <thead>
+            <tr>
+                <th>タイトル</th>
+                <th>件数</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let category of shopCategories; let i = index"
+                (click)="onRoute(category.shopCategoryName, category.rakutenShopCategoryId)">
+                <td>{{category.shopCategoryName}}</td>
+                <td>{{category.entryNum}}</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr *ngFor="let category of shopCategories; let i = index">
+                <td colspan="2" class="text-end border-bottom-0" *ngIf="i == 0">
+                    <span
+                        *ngIf="category.reflectionAt && category.reflectionAt.seconds && category.reflectionAt.seconds > 0">最新反映日時:
+                        {{category.secondsToJpDateTime(category.reflectionAt.seconds)}}</span>
+                    <button disableOnLoading="button" class="btn btn-dark ms-4" (click)="reflection()">楽天へ反映</button>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</section>

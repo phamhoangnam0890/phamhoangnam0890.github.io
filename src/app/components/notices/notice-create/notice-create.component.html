@@ -1,0 +1,76 @@
+<app-common-nav></app-common-nav>
+<section class="container s-notices">
+    <nav class="nav-breadcrumb">
+        <ul>
+            <li><a [routerLink]="['/']"><span class="material-icons">home</span></a></li>
+            <li><a [routerLink]="['/notices']">お知らせ</a></li>
+            <li><a [routerLink]="['/notices/create']">新規登録</a></li>
+        </ul>
+    </nav>
+    <form [formGroup]="noticeInputForm" (ngSubmit)="onSave()" class="needs-validation" novalidate>
+
+        <div class="card">
+            <div class="card-body" formGroupName="basic">
+                <div *ngIf="errorMessage" class="alert alert-danger alert-sm mb-4">
+                    {{errorMessage}}
+                </div>
+
+                <table class="table table-common-form">
+                    <tbody>
+                        <tr>
+                            <th>ステータス<span class="required">必須</span></th>
+                            <td>
+                                <select formControlName="status" class="form-select w-status">
+                                    <option [value]="1">公開</option>
+                                    <option [value]="-1">非公開</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>タイトル<span class="required">必須</span></th>
+                            <td>
+                                <input type="text" class="form-control" required formControlName="title">
+                                <div class="invalid-feedback">
+                                    ※タイトルは必須入力項目です。
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>内容<span class="required">必須</span></th>
+                            <td>
+                                <textarea class="form-control" required formControlName="content"></textarea>
+                                <div class="invalid-feedback">
+                                    ※内容は必須入力項目です。
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer double">
+                <a disableOnLoading="a" class="btn btn-outline-secondary" [routerLink]="['/notices']">キャンセル</a>
+                <button disableOnLoading="button" class="btn btn-primary" type="submit">新規登録</button>
+            </div>
+        </div>
+    </form>
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="modalSaveComplete" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">お知らせ 新規登録完了</h5>
+            </div>
+            <div class="modal-body message">
+                新規登録が完了いたしました。一覧画面へ遷移します。
+            </div>
+            <div class="modal-footer">
+                <button disableOnLoading="button" type="button" class="btn btn-outline-secondary"
+                    data-bs-dismiss="modal">
+                    閉じる
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

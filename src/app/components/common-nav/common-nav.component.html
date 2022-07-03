@@ -1,0 +1,45 @@
+<header class="header">
+    <div class="title" [routerLink]="['/']">
+        <!--        <img src="/assets/img/img-logo.svg" alt="在庫管理システム" class="img-logo">-->
+        <span># D E M O</span>
+    </div>
+    <div class="btn-group">
+        <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            {{userName}}
+        </button>
+        <ul class="dropdown-menu">
+            <li (click)="logOut()">Logout</li>
+        </ul>
+    </div>
+</header>
+
+<nav class="side-bar">
+    <ul class="side-menu">
+        <li><a [routerLink]="['/']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <span class="material-icons">home</span>D A S H B O A R D</a>
+        </li>
+        <li>
+            <input id="nav-items" class="nav-check" type="checkbox" [(ngModel)]="itemsFlg" (change)="changeFlg(1)">
+            <label class="nav-label" for="nav-items">
+                <i class="material-icons">
+                    create
+                </i>
+                <span>M A S T E R</span>
+            </label>
+            <div class="nav-content">
+                <ul>
+                    <li><a [routerLink]="'/items'" routerLinkActive="active">P R O D U C T S</a></li>
+                    <li><a [routerLink]="'/categories'" routerLinkActive=" active">C A T E G O R I E S</a></li>
+                </ul>
+            </div>
+        </li>
+        <!-- <li *ngIf="env.production == false"><a [routerLink]="['/orders']" routerLinkActive="active">
+                <span class="material-icons">support_agent</span>注文管理</a></li> -->
+        <li><a [routerLink]="['/users']" routerLinkActive="active">
+            <span class="material-icons">people</span>U S E R S</a></li>
+        <!--        <li><a [routerLink]="['/settings']" routerLinkActive="active">-->
+        <!--                <span class="material-icons">settings</span>システム設定</a></li>-->
+        <!--        <li><a [routerLink]="['/notices']" routerLinkActive="active">-->
+        <!--                <span class="material-icons">circle_notifications</span>お知らせ（楽天）</a></li>-->
+    </ul>
+</nav>

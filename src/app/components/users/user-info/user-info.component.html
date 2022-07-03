@@ -1,0 +1,41 @@
+<app-common-nav></app-common-nav>
+<section class="container s-users">
+    <nav class="nav-breadcrumb">
+        <ul>
+            <li><a [routerLink]="['/']"><span class="material-icons">home</span></a></li>
+            <li><a [routerLink]="['/users']">Users</a></li>
+            <li><a [routerLink]="['/users/info/'+ userId]">Info：{{userData?.userName}}</a></li>
+        </ul>
+    </nav>
+    <div class="card" *ngIf="userData">
+        <div class="card-body">
+            <table class="table table-common-info">
+                <tbody>
+                <tr>
+                    <th>User name</th>
+                    <td>{{userData.userName}}</td>
+                </tr>
+                <tr>
+                    <th>Role</th>
+                    <td>{{userData.userRole}}</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>{{userData.email}}</td>
+                </tr>
+                <tr>
+                    <th>Latest updated</th>
+                    <td>{{this.commonService.secondsToJpDateTime(userData.updatedAt.seconds, '/')}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer double">
+            <a disableOnLoading="a" class="btn btn-outline-secondary"
+               [routerLink]="['/users']">Users</a>
+            <a *ngIf="commonService.getUserRole() === 'admin'" class="btn btn-primary"
+               [routerLink]="['/users/edit/'+userId]">Edit</a>
+
+        </div>
+    </div>
+</section>

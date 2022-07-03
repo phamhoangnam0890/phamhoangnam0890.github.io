@@ -1,0 +1,160 @@
+<app-common-nav></app-common-nav>
+<section class="container s-items">
+    <nav class="nav-breadcrumb">
+        <ul>
+            <li><a [routerLink]="['/']"><span class="material-icons">home</span></a></li>
+            <li><a [routerLink]="['/item-events/rakuten']">楽天イベント管理</a></li>
+            <li *ngIf="this.rakutenEvent"><a
+                    [routerLink]="['/item-events/rakuten/info/'+ this.itemEventId]">詳細：{{this.rakutenEvent?.rakutenEventName}}</a>
+            </li>
+            <li><a
+                    [routerLink]="['/item-events/rakuten/info/'+ this.itemEventId+'/item/'+ this.itemId]">商品：{{productInfo?.productName}}</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="card">
+        <div class="card-body" *ngIf="productInfo && productInfo.productItemId != 0">
+            <h2 class="d-flex-sb">
+                <span class="title-left">基本情報</span>
+            </h2>
+
+            <div class="item-event-rakuten"
+                *ngIf="productInfo && productInfo.rakutenEventData && productInfo.rakutenEventData.length > 0">
+                <span *ngFor="let re of productInfo.rakutenEventData"
+                    class="badge bg-rakuten">{{re.rakutenEventName}}</span>
+            </div>
+
+            <table class="table table-common-info table-item-info-shop">
+                <tbody *ngIf="productInfo && productInfo.productItemId != 0">
+                    <tr>
+                        <th>カテゴリ</th>
+                        <td>
+                            {{productInfo.categoryName}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>商品コード</th>
+                        <td>{{productInfo.productId}}<span class="badge bg-danger ms-3">削除予定</span></td>
+                    </tr>
+                    <tr>
+                        <th>商品名（タイトル）</th>
+                        <td>
+                            {{productInfo.productName}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>仕入れ単価</th>
+                        <td>{{productInfo.purchaseUnitPrice}}
+                            {{productInfo.purchaseUnitPriceCurrency}}／{{productInfo.japanPrice}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>仕入れ元</th>
+                        <td>{{productInfo.supplierName}}</td>
+                        <!--                        <td>※仕入れ先が複数ある場合はその都度別のマスターを作る？</td>-->
+                    </tr>
+                    <tr>
+                        <th>仕入れ元製品URL</th>
+                        <td>
+                            <a [href]="productInfo.supplierProductUrl" target="_blank"
+                                class="link-line">{{productInfo.supplierProductUrl}}</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>仕入れ元画像</th>
+                        <td>
+                            <div class="d-item-image-thumbnail-list">
+                                <ng-container *ngFor="let image of sourceImages; let idx = index">
+                                    <img [src]="image.src" class="img-thumbnail" (click)="openSourceImageView(idx)"
+                                        [alt]="idx">
+                                </ng-container>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>製品詳細</th>
+                        <td>
+                            <ng-container
+                                *ngFor="let p of this.commonService.splitLines(productInfo.productDetails); let i = index">
+                                {{p}}
+                                <br *ngIf=" i < this.commonService.splitLines(productInfo.productDetails).length - 1">
+                            </ng-container>
+                        </td>
+                        <!--                        <td>※登録した商品情報は、各ショップのデータ新規登録時に、デフォルト入力される想定</td>-->
+                    </tr>
+                    <tr>
+                        <th>販売単価（税別）</th>
+                        <td>{{productInfo.sellingPrice|number}}円</td>
+                    </tr>
+                    <tr>
+                        <th>画像</th>
+                        <td>
+                            <div class="d-item-image-thumbnail-list">
+                                <ng-container *ngFor="let image of images; let idx = index">
+                                    <img [src]="image.src" class="img-thumbnail" (click)="openImageView(idx)"
+                                        [alt]="idx">
+                                </ng-container>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>拡張カテゴリー</th>
+                        <td>
+                            <ul>
+                                <li>カテゴリー1</li>
+                                <li>カテゴリー2</li>
+                            </ul>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+    <a class="btn btn-link text-danger mt-4" (click)="onDeleteCheck()">削除</a>
+
+</section>
+<!-- Modal -->
+<div class="modal fade" id="modalDeleteCheck" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">削除予定 </h5>
+            </div>
+            <div class="modal-body">
+                <div class="message text-center mt-4 mb-4">
+                    <p>この商品を削除予定に<br>変更してもよろしいですか？</p>
+                </div>
+            </div>
+            <div class="modal-footer double">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    キャンセル
+                </button>
+                <button type="button" data-bs-dismiss="modal" class="btn btn-danger" (click)="onDelete()">削除予定
+                </button>
+            </div>
+        </div>
+    </div>
+</div><!-- Modal -->
+<div class="modal fade" id="modalDeleteComplete" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">削除予定 完了</h5>
+            </div>
+            <div class="modal-body">
+                <div class="message text-center mt-4 mb-4">
+                    <p>削除予定にいたしました。</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    閉じる
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

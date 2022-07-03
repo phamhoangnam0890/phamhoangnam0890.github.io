@@ -1,0 +1,109 @@
+<app-common-nav></app-common-nav>
+
+<section class="container s-dashboard">
+...
+<!--    <div class="g-dashboard">-->
+    <!--        <div *ngIf="warnings && warnings.length > 0">-->
+    <!--            <h2>注意</h2>-->
+    <!--            <div class="card">-->
+    <!--                <div class="card-body">-->
+    <!--                    <ul>-->
+    <!--                        <li *ngFor="let w of warnings">-->
+    <!--                            <span class="text-danger">{{w}}</span>-->
+    <!--                        </li>-->
+    <!--                    </ul>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--        <br>-->
+    <!--    </div>-->
+
+    <!--    <div class="g-dashboard">-->
+
+    <!--        <div class="item-opened">-->
+    <!--            <h2>公開中の商品数</h2>-->
+    <!--            <div class="card">-->
+    <!--                <div class="card-body text-end">-->
+    <!--                    <strong class="text-big">0</strong>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--        <div class="month-orders">-->
+    <!--            <h2>今月の注文件数</h2>-->
+    <!--            <div class="card">-->
+    <!--                <div class="card-body text-end">-->
+    <!--                    <strong class="text-big">0</strong>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--        <div class="notice">-->
+    <!--            <div class="card">-->
+    <!--                <div class="card-body">-->
+    <!--                    <ul>-->
+    <!--                        <li>-->
+    <!--                            <span class="text-danger">未発送の注文が、0件あります。</span>-->
+    <!--                        </li>-->
+    <!--                    </ul>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--        <div class="recent-orders">-->
+    <!--            <h2>最近の注文</h2>-->
+    <!--            <div class="card">-->
+    <!--                <div class="card-body">-->
+    <!--                    <ul>-->
+    <!--                        <li>-->
+    <!--                            <span class="text-danger">注文はありません。</span>-->
+    <!--                        </li>-->
+    <!--                    </ul>-->
+    <!--                </div>-->
+    <!--            </div>-->
+
+    <!--            <div class="card">-->
+    <!--                <ul class="list-group list-group-flush">-->
+    <!--                    <li class="list-group-item">text text text text text</li>-->
+    <!--                    <li class="list-group-item">text text text text text</li>-->
+    <!--                    <li class="list-group-item">text text text text text</li>-->
+    <!--                    <li class="list-group-item">text text text text text</li>-->
+    <!--                    <li class="list-group-item">text text text text text</li>-->
+    <!--                </ul>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--        <div class="rakuten-design" *ngIf="systemLicense">-->
+    <!--            <h2 class="d-title">-->
+    <!--                <span>楽天ライセンスキー</span>-->
+    <!--            </h2>-->
+    <!--            <div class="card">-->
+    <!--                <div class="card-body">-->
+    <!--                    <div>-->
+    <!--                        &lt;!&ndash; <span>有効期限：2022/05/06</span> &ndash;&gt;-->
+    <!--                        <span-->
+    <!--                            class="text-danger">有効期限：{{this.commonService.secondsToJpDateFormatWithSeparator(systemLicense.expiredAt.seconds-->
+    <!--                            ? systemLicense.expiredAt.seconds : 0, '/')}}</span>-->
+    <!--                    </div>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--            <h2 class="d-title">-->
+    <!--                <span>楽天デザイン</span>-->
+    <!--            </h2>-->
+    <!--            <div class="card">-->
+    <!--                <div class="card-body">-->
+    <!--                    <div>-->
+    <!--                        <button class="btn btn-sm btn-dark me-4">反映</button>-->
+    <!--                        <span>最終更新日時：2022/05/06 11:00</span>-->
+    <!--                    </div>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--        <div class="ranking-category">-->
+    <!--            <h2>カテゴリ別ランキング</h2>-->
+    <!--            <div class="card">-->
+    <!--                <ul class="list-group list-group-flush">-->
+    <!--                    <ng-container *ngFor="let item of [1,2,3,4,5,6,7,8]">-->
+    <!--                        <li class="list-group-item"><span>{{item}}</span>ピアス(22)</li>-->
+    <!--                    </ng-container>-->
+    <!--                </ul>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
+</section>

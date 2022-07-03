@@ -1,0 +1,174 @@
+<app-common-nav></app-common-nav>
+<section class="container s-purchase">
+    <nav class="nav-breadcrumb">
+        <ul>
+            <li><a [routerLink]="['/']"><span class="material-icons">home</span></a></li>
+            <li><a [routerLink]="['/purchases']">仕入管理 一覧</a></li>
+        </ul>
+    </nav>
+
+    <form [formGroup]="searchForm">
+        <div class="card card-common-search" formGroupName="basic">
+            <div class="card-body d-search">
+
+                <div class="search-item-wrap">
+                    <div class="wrap-row">
+                        <div class="search-item">
+                            <label>商品コード</label>
+                            <input formControlName="itemNo" type="text" class="form-control">
+                        </div>
+                        <div class="search-item">
+                            <label>品名</label>
+                            <input formControlName="itemName" type="text" class="form-control">
+                        </div>
+                        <div class="search-item">
+                            <label>仕入元</label>
+                            <input formControlName="supplier" type="text" class="form-control">
+                        </div>
+
+                        <div class="search-btn ms-5">
+                            <button type="submit" class="btn btn-dark btn-search ms-2">
+                                検索
+                            </button>
+                        </div>
+                    </div>
+                    <div class="wrap-row mt-2">
+                        <div class="search-item period">
+                            <label>仕入日</label>
+                            <div class="d-period">
+                                <input formControlName="dateStart" type="date" class="form-control">
+                                <span>〜</span>
+                                <input formControlName="dateEnd" type="date" class="form-control">
+                            </div>
+                        </div>
+                        <div class="search-item ms-3">
+                            <label>仕入担当</label>
+                            <input formControlName="userName" type="text" class="form-control">
+                        </div>
+                        <div class="search-item status-order">
+                            <label>ステータス</label>
+                            <div class="d-status-order">
+                                <div class="form-check">
+                                    <input formControlName="status1" class="form-check-input" type="checkbox"
+                                        id="status1" value="1">
+                                    <label class="form-check-label" for="status1">仕入中</label>
+                                </div>
+                                <div class="form-check">
+                                    <input formControlName="status2" class="form-check-input" type="checkbox"
+                                        id="status2" value="2">
+                                    <label class="form-check-label" for="status2">仕入済み</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="alert alert-secondary alert-sm text-center" *ngIf="this.purchasesData.length == 0">
+        該当する仕入は見つかりませんでした。
+    </div>
+
+    <ng-container *ngIf="this.purchasesData.length !== 0">
+
+        <select (change)="statuChangeCheck($event)" class="form-control  select-purchase-status"
+            [disabled]="this.selectedCountNum == 0">
+            <option value="0" selected>▼ステータス一括変更</option>
+            <option value="1">仕入中</option>
+            <option value="2">仕入済み</option>
+        </select>
+        <table class="table table-common-list table-purchase-list">
+            <thead>
+                <tr>
+                    <th>
+                    </th>
+                    <th>商品コード</th>
+                    <th>写真</th>
+                    <th>品名</th>
+                    <th>数量</th>
+                    <th>仕入元</th>
+                    <th>仕入日</th>
+                    <th>仕入担当</th>
+                    <th>ステータス</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let d of this.purchasesData; let i = index" [class.selected]="d.selected">
+                    <td (click)="onCheckItems(i)"><input class="form-check-input" type="checkbox"
+                            [checked]="d.selected">
+                    </td>
+                    <td [routerLink]="['./info/'+i]">{{d.itemNo}}</td>
+                    <td [routerLink]="['./info/'+i]">
+                        <img src="https://placehold.jp/450x850.png" class="img-purchase">
+                    </td>
+                    <td [routerLink]="['./info/'+i]">{{d.itemName}}</td>
+                    <td [routerLink]="['./info/'+i]">{{d.quantity|number}}</td>
+                    <td [routerLink]="['./info/'+i]">{{d.supplier}}</td>
+                    <td [routerLink]="['./info/'+i]">{{d.date}}</td>
+                    <td [routerLink]="['./info/'+i]">{{d.userName}}</td>
+                    <td [routerLink]="['./info/'+i]">
+                        <ng-container *ngIf="d.status == 1"><span class="text-primary">仕入中</span></ng-container>
+                        <ng-container *ngIf="d.status == 2">仕入済み</ng-container>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="pager">
+            <span class="material-icons disabled">
+                arrow_back_ios
+            </span>
+
+            <div class="current">全120件(1-20)</div>
+
+            <span class="material-icons">
+                arrow_forward_ios
+            </span>
+        </div>
+    </ng-container>
+
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="modalStatusChangeCheck" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">ステータス変更　確認</h5>
+            </div>
+            <div class="modal-body message">
+                選択した商品のステータスを、<br>一括で
+                「<ng-container *ngIf="this.selectedStatusChange==1">仕入中</ng-container>
+                <ng-container *ngIf="this.selectedStatusChange==2">仕入済み</ng-container>」へ変更してもよろしいですか？
+            </div>
+            <div class="modal-footer double">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    キャンセル
+                </button>
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal" (click)="statuChange()">
+                    ステータス変更
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalStatusChangeComplete" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">ステータス変更　完了</h5>
+            </div>
+            <div class="modal-body message">
+                ステータスを「仕入中」に変更しました。
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    閉じる
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

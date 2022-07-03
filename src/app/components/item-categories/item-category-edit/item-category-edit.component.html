@@ -1,0 +1,130 @@
+<app-common-nav></app-common-nav>
+<section class="container s-item-categories">
+    <nav class="nav-breadcrumb">
+        <ul>
+            <li><a [routerLink]="['/']"><span class="material-icons">home</span></a></li>
+            <li><a [routerLink]="['/item-categories/rakuten']">楽天カテゴリ管理</a></li>
+            <li><a *ngIf="itemCategoryId"
+                    [routerLink]="['/item-categories/rakuten/edit/'+itemCategoryId]">カテゴリ：{{shopCategoryName}}</a></li>
+        </ul>
+    </nav>
+    <div class="card">
+        <div class="card-body">
+            <h2 class="d-flex-sb"><span>{{shopCategoryName}}</span>
+                <button class="btn btn-dark btn-sm" (click)="onModalListOrderChange()">アイテム選択</button>
+            </h2>
+            <table class="table  table-item-category-list"
+                *ngIf="getShopCategoryData && getShopCategoryData.length > 0">
+                <thead>
+                    <tr>
+                        <th>写真</th>
+                        <th>商品コード</th>
+                        <th>商品タイトル</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of getShopCategoryData;let idx = index">
+                        <td>
+                            <img *ngIf="item.pictureUrl != ''"
+                                src="https://image.rakuten.co.jp/marshmallow-shop/cabinet/product-img/09044749/93-1.jpg"
+                                class="img-item">
+                        </td>
+                        <td>{{item.productId}}</td>
+                        <td>{{item.productItemName}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card-footer">
+            <a class="btn btn-outline-secondary" [routerLink]="['/item-categories/rakuten/']">一覧へ戻る</a>
+        </div>
+    </div>
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="modalListOrderChange" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">アイテム選択</h5>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="searchForm" class="card-common-search" (ngSubmit)="onSubmit()">
+                    <div class="d-search" formGroupName="basic">
+                        <div class="search-item-wrap wrap-sm">
+                            <div class="wrap-row">
+                                <div class="search-item">
+                                    <label>商品ID</label>
+                                    <input formControlName="itemId" type="text" class="form-control form-control-sm">
+                                </div>
+                                <div class="search-item">
+                                    <label>商品名</label>
+                                    <input formControlName="itemName" type="text" class="form-control form-control-sm">
+                                </div>
+                                <div class="search-item period">
+                                    <label>登録日</label>
+                                    <div class="d-period">
+                                        <input formControlName="dateStart" type="date"
+                                            class="form-control form-control-sm">
+                                        <span>〜</span>
+                                        <input formControlName="dateEnd" type="date"
+                                            class="form-control form-control-sm">
+                                    </div>
+                                </div>
+                                <div class="search-btn">
+                                    <button disableOnLoading="button" type="submit"
+                                        class="btn btn-dark btn-sm btn-search ms-2">
+                                        検索
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <label class="form-check-label d-all-check" for="all-check">
+                    <input class="form-check-input" type="checkbox" id="all-check">
+                    <span>一括選択</span></label>
+
+                <div class="select-list">
+                    <ng-container *ngFor="let item of itemData;let idx = index">
+                        <div class="item-info">
+                            <input class="form-check-input" type="checkbox" [id]="'item' + idx"
+                                (change)="onChanged(idx)" [checked]="item.isChecked">
+                            <label class="form-check-label" [for]="'item' + idx">
+                                <div class="item-id"> {{item.productId}}</div>
+                                <div class="item-title">
+                                    {{item.productItemName}}
+                                    <br>
+                                    <ng-container
+                                        *ngFor="let p of this.commonService.splitLines(item.productDescription); let i = index">
+                                        {{p}}
+                                        <br
+                                            *ngIf=" i < this.commonService.splitLines(item.productDescription).length - 1">
+                                    </ng-container>
+                                </div>
+                                <div class="item-date">{{item.createdAt && item.createdAt.seconds ?
+                                    this.commonService.secondsToJpDateTime(item.createdAt.seconds, '/') : ''}}</div>
+                            </label>
+                        </div>
+                    </ng-container>
+
+                </div>
+
+
+            </div>
+            <div class="modal-footer double">
+                <button hidden type="button" class="btn btn-outline-secondary" id="dismissButton"
+                    data-bs-dismiss="modal">
+                    キャンセル
+                </button>
+                <button type="button" class="btn btn-outline-secondary" (click)="onDismiss()">
+                    キャンセル
+                </button>
+                <button type="button" class="btn btn-dark" (click)="onSelect()" disableOnLoading="button">
+                    選択
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

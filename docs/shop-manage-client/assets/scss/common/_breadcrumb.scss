@@ -1,0 +1,35 @@
+@import "../style";
+
+.nav-breadcrumb {
+  margin-bottom: 20px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 6px;
+  ul {
+    @include flex();
+    font-size: 15px;
+    li {
+      @include flex();
+      &::after {
+        content: ">";
+        margin-left: 6px;
+        margin-right: 6px;
+        font-size: 11px;
+        color: #aaa;
+      }
+      a {
+        color: #444;
+        span.material-icons {
+          font-size: 19px;
+        }
+      }
+
+      &:last-child {
+        &::after {
+          content: "";
+          margin-left: 0px;
+          margin-right: 0px;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,187 @@
+@import "../style";
+
+.list-link-create {
+  position: absolute;
+  right: 15px;
+  top: 13px;
+  background-color: #fafafa;
+  padding-left: 25px;
+}
+
+// 検索
+.card-common-search {
+  margin-bottom: 30px;
+
+  .search-item-wrap {
+    width: 100%;
+    .wrap-row {
+      width: 100%;
+    }
+
+    &.wrap-sm {
+      font-size: 0.9rem;
+    }
+  }
+
+  .d-search {
+    display: flex;
+    align-items: flex-end;
+
+    &.block {
+      display: block;
+    }
+
+    .search-item {
+      width: 20%;
+      margin-right: 30px;
+
+      label {
+        font-weight: bold;
+        margin-bottom: 3px;
+      }
+
+      .form-check {
+        label {
+          font-weight: normal;
+        }
+      }
+
+      &.period {
+        width: auto;
+
+        .d-period {
+          display: flex;
+          align-items: center;
+
+          span {
+            margin-left: 10px;
+            margin-right: 10px;
+          }
+          input {
+            width: 170px;
+          }
+        }
+      }
+
+      .d-price-range {
+        display: flex;
+        align-items: center;
+
+        span {
+          margin-left: 10px;
+          margin-right: 10px;
+        }
+        input {
+          width: 100px;
+        }
+      }
+
+      &.status {
+        width: 130px;
+      }
+      &.month {
+        width: 170px;
+      }
+
+      &.status-order {
+        max-width: none;
+        width: 420px;
+
+        .d-status-order {
+          display: flex;
+
+          .form-check {
+            margin-right: 20px;
+          }
+        }
+      }
+
+      &.status-open {
+        max-width: none;
+        width: 155px;
+
+        .d-status-order {
+          display: flex;
+        }
+      }
+    }
+    .search-btn {
+      .btn-search {
+        width: 120px;
+      }
+    }
+
+    .wrap-row {
+      display: flex;
+      align-items: flex-end;
+    }
+  }
+}
+
+// Table
+.table-common-list {
+  thead {
+    tr {
+      background: #4a555e;
+      color: #fff;
+
+      th {
+        &:first-child {
+          // 初列のデフォルトはNo
+          width: 100px;
+        }
+        &:last-child {
+          // 最終列のデフォルトは日付
+          width: 120px;
+        }
+
+        .d-icon-sort {
+          display: flex;
+          align-items: center;
+
+          &.bottom {
+            align-items: flex-end;
+          }
+
+          .icon-sort {
+            font-size: 18px;
+            margin-left: 10px;
+            background-color: #eee;
+            border-radius: 50%;
+            height: 18px;
+            width: 18px;
+            color: #212529;
+            line-height: 20px;
+            &:hover {
+              transition: 0.3s;
+              background-color: #ddd;
+              cursor: pointer;
+            }
+          }
+        }
+      }
+    }
+  }
+  tbody {
+    tr {
+      @include hover();
+      background-color: #fff;
+
+      &:hover {
+        background-color: #eee;
+      }
+    }
+  }
+
+  &.no-hover {
+    tbody {
+      tr {
+        &:hover {
+          background-color: #fff;
+          opacity: 1;
+          cursor: auto;
+        }
+      }
+    }
+  }
+}

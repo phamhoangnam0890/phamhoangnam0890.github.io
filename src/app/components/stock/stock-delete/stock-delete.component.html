@@ -1,0 +1,101 @@
+<app-common-nav></app-common-nav>
+<section class="container s-stock">
+    <nav class="nav-breadcrumb">
+        <ul>
+            <li><a [routerLink]="['/']"><span class="material-icons">home</span></a></li>
+            <li><a [routerLink]="['/stock']">在庫管理 一覧</a></li>
+            <li><a [routerLink]="['/stock/info/1']">詳細：商品名</a></li>
+            <li><a [routerLink]="['/stock/delete/2']">削除確認</a></li>
+        </ul>
+    </nav>
+    <div class="card">
+        <div class="card-body">
+            <div class="alert alert-danger">
+                以下の在庫を削除してもよろしいですか？
+            </div>
+            <table class="table table-common-info">
+                <tbody>
+                    <tr>
+                        <th>カテゴリ</th>
+                        <td>カテゴリA</td>
+                    </tr>
+                    <tr>
+                        <th>商品名（タイトル）</th>
+                        <td>商品名（タイトル）</td>
+                    </tr>
+                    <tr>
+                        <th>仕入れ単価</th>
+                        <td>1,000 VND</td>
+                    </tr>
+                    <tr>
+                        <th>仕入れ元</th>
+                        <td>仕入れ先A</td>
+                    </tr>
+                    <tr>
+                        <th>仕入れ元製品URL</th>
+                        <td>
+                            <a href="https://wwwwww" target="_blank" class="link-line">https://wwwwww</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>製品詳細</th>
+                        <td>texttext
+                            texttext
+                            texttext
+                            texttext
+                            texttext
+                            texttext
+                            texttext
+                            texttext
+                            texttext
+                            texttext
+                            texttext
+                            text
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Yahoo!ショッピング</th>
+                        <td>（Yahooショッピングの管理画面の項目）</td>
+                    </tr>
+                    <tr>
+                        <th>楽天市場</th>
+                        <td>（楽天市場の管理画面の項目）</td>
+                    </tr>
+                    <tr>
+                        <th>Base</th>
+                        <td>（Baseの管理画面の項目）</td>
+                    </tr>
+                    <tr>
+                        <th>販売単価（税別）</th>
+                        <td>2,000円</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card-footer double">
+            <a class="btn btn-outline-secondary" [routerLink]="['/stock/info/itemNo']">キャンセル</a>
+            <button class="btn btn-danger" type="button" (click)="onDelete()">削除</button>
+        </div>
+    </div>
+
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="modalDeleteComplete" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">在庫　削除完了</h5>
+            </div>
+            <div class="modal-body message">
+                削除完了いたしました。一覧へ遷移します。
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    一覧画面へ移動
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

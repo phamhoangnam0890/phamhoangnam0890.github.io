@@ -1,0 +1,46 @@
+@import "../style";
+
+header.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #22282e;
+  color: #fff;
+  height: $header-height;
+  padding-left: 10px;
+  padding-right: 10px;
+  @include flex-sb();
+  z-index: 100;
+
+  .title {
+    @include flex();
+    @include hover();
+    .img-logo {
+      height: 37px;
+      width: auto;
+      margin-right: 15px;
+    }
+  }
+
+  .btn-group {
+    min-width: 160px;
+    .dropdown-toggle,
+    .dropdown-menu {
+      width: 100%;
+      font-size: 14px;
+    }
+    .dropdown-toggle {
+      @include flex-sb();
+      padding-right: 15px;
+      background-color: #fff;
+      padding-left: 20px;
+    }
+    .dropdown-menu {
+      li {
+        padding-left: 20px;
+        @include hover();
+      }
+    }
+  }
+}

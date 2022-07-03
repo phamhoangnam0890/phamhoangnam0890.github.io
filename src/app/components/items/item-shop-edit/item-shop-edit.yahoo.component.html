@@ -1,0 +1,208 @@
+<!--<app-common-nav></app-common-nav>-->
+<!--<section class="container s-items">-->
+<!--    <nav class="nav-breadcrumb">-->
+<!--        <ul>-->
+<!--            <li><a [routerLink]="['/']"><span class="material-icons">home</span></a></li>-->
+<!--            <li><a [routerLink]="['/items']">商品一覧</a></li>-->
+<!--            <li><a [routerLink]="['/items/info/'+itemId]">詳細：商品名</a></li>-->
+<!--            <li><a [routerLink]="['/items/edit/yahoo/'+itemId]">編集：Yahoo!ショッピング</a></li>-->
+<!--        </ul>-->
+<!--    </nav>-->
+
+<!--    <form [formGroup]="itemInputForm" (ngSubmit)="onSave()" class="needs-validation" novalidate>-->
+<!--        <div class="card">-->
+<!--            <div class="card-body">-->
+<!--                <h2 class="d-title mb-3">-->
+<!--                    <span>Yahoo!ショッピング</span>-->
+<!--                    <div class="right-btns">-->
+<!--                        <button type="button" class="btn btn-sm btn-dark">反映</button>-->
+<!--                    </div>-->
+<!--                </h2>-->
+<!--                <table class="table table-common-form table-item-shop-yahoo" formGroupName="basic"-->
+<!--                       *ngIf="baseProductInfo">-->
+<!--                    <tbody>-->
+<!--                    <tr>-->
+<!--                        <th>商品コード</th>-->
+<!--                        <td>{{baseProductInfo.productId}}</td>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                        <th>パス</th>-->
+<!--                        <td>{{baseProductInfo.path}}</td>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                        <th>ページ公開<span class="required">必須</span></th>-->
+<!--                        <td><input type="radio" formControlName="pageOpen" [value]="1" id="pageOpen"-->
+<!--                                   class="normal-radio-input">-->
+<!--                            <label class="normal-radio" for="pageOpen">-->
+<!--                                <span>表示</span></label>-->
+
+<!--                            <input type="radio" formControlName="pageOpen" [value]="0" id="pageClose"-->
+<!--                                   class="normal-radio-input">-->
+<!--                            <label class="normal-radio" for="pageClose">-->
+<!--                                <span>非表示</span></label>-->
+<!--                        </td>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                        <th>商品名<span class="required">必須</span></th>-->
+<!--                        <td>-->
+<!--                            <div class="info icon">75文字以内</div>-->
+<!--                            <input type="text" class="form-control" required formControlName="itemName"-->
+<!--                                   [class.error]="itemInputForm.controls.basic.controls.itemName.value.length > 75">-->
+<!--                            <div class="invalid-feedback">-->
+<!--                                ※商品名は必須入力項目です。-->
+<!--                            </div>-->
+<!--                            <div class="count-byte"-->
+<!--                                 [class.over]="this.itemInputForm.controls.basic.controls.itemName.value.length > 75">-->
+<!--                                {{this.itemInputForm.controls.basic.controls.itemName.value.length}} / 75文字-->
+<!--                            </div>-->
+<!--                        </td>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                        <th>通常販売価格(税込)<span class="required">必須</span></th>-->
+<!--                        <td>-->
+<!--                            <input type="number" formControlName="price" class="form-control w-price" required>-->
+<!--                            <span class="ms-2">円</span>-->
+<!--                            <div class="invalid-feedback">-->
+<!--                                ※項目は必須入力項目です。-->
+<!--                            </div>-->
+<!--                        </td>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                        <th>セール価格（税込）</th>-->
+<!--                        <td>-->
+<!--                            <input type="number" formControlName="salesPrice" class="form-control w-price">-->
+<!--                            <span class="ms-2">円</span>-->
+<!--                        </td>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                        <th>プロダクトカテゴリ-->
+<!--                        </th>-->
+<!--                        <td>-->
+
+<!--                                <span-->
+<!--                                        class="ms-2">{{itemInputForm.get('basic').get('yahooProductCategoryName').value}}</span>-->
+<!--                            &lt;!&ndash;                                <select formControlName="yahooProductCategory" *ngIf="yahooProductCategories"&ndash;&gt;-->
+<!--                            &lt;!&ndash;                                    (change)="onProductCategoryChanged($event)" class="form-select">&ndash;&gt;-->
+<!--                            &lt;!&ndash;                                    <option *ngFor="let ypc of yahooProductCategories; let i = index"&ndash;&gt;-->
+<!--                            &lt;!&ndash;                                        [value]="ypc.productCategoryId">{{ypc.productCategoryName}}</option>&ndash;&gt;-->
+<!--                            &lt;!&ndash;                                </select>&ndash;&gt;-->
+<!--                        </td>-->
+<!--                    </tr>-->
+<!--                    <tr class="tr-spec">-->
+<!--                        <th>スペック設定</th>-->
+<!--                        <td formArrayName="specArray">-->
+<!--                            <div class="info icon">-->
+<!--                                プロダクトカテゴリを入力後、設定可能になります。-->
+<!--                            </div>-->
+<!--                            <ng-container-->
+<!--                                    *ngFor="let spec of this.itemInputForm.controls.basic.controls.specArray.controls; let idx = index">-->
+
+<!--                                <ng-container [formGroupName]="idx">-->
+<!--                                    <ng-container formArrayName="dataArray">-->
+<!--                                        <h3 class="title-spec">{{spec.get('specName').value}}</h3>-->
+
+<!--                                        <ng-container-->
+<!--                                                *ngFor="let d of spec.dataArray.controls; let jdx = index">-->
+
+<!--                                            <ng-container [formGroupName]="jdx">-->
+<!--                                                <ng-container *ngIf="spec.get('selectionType').value == 0">-->
+<!--                                                    <label class="normal-radio" [for]="'spec' + idx + '-' + jdx">-->
+<!--                                                        <input (input)="onRadioChanged(spec, d)" type="radio"-->
+<!--                                                               [checked]="d.get('valueChecked').value"-->
+<!--                                                               [id]="'spec' + idx + '-' + jdx"-->
+<!--                                                               class="normal-radio-input">-->
+<!--                                                        <span>{{d.get('valueName').value}}</span></label>-->
+<!--                                                </ng-container>-->
+<!--                                                <ng-container *ngIf="spec.get('selectionType').value == 1">-->
+
+<!--                                                    <label class="form-check-label"-->
+<!--                                                           [for]="'category' + idx + '-' + jdx">-->
+<!--                                                        <input formControlName="valueChecked"-->
+<!--                                                               class="form-check-input" type="checkbox"-->
+<!--                                                               [id]="'valueId'">-->
+<!--                                                        {{d.get('valueName').value}}</label>-->
+<!--                                                </ng-container>-->
+
+<!--                                            </ng-container>-->
+<!--                                        </ng-container>-->
+<!--                                    </ng-container>-->
+<!--                                </ng-container>-->
+<!--                            </ng-container>-->
+
+<!--                            &lt;!&ndash;                            <ng-container&ndash;&gt;-->
+<!--                            &lt;!&ndash;                                    *ngFor="let label of ['ホワイト系','ブラック系','グレー系','ベージュ系','ブラウン系','レッド系','ピンク系','パープル系','ネイビー系','ブルー系','グリーン系','カーキ系'];let i = index">&ndash;&gt;-->
+<!--                            &lt;!&ndash;                                <label class="form-check-label" for="category{{i}}">&ndash;&gt;-->
+<!--                            &lt;!&ndash;                                    <input class="form-check-input" type="checkbox" id="category{{i}}" [value]="i">&ndash;&gt;-->
+<!--                            &lt;!&ndash;                                    {{label}}</label>&ndash;&gt;-->
+<!--                            &lt;!&ndash;                            </ng-container>&ndash;&gt;-->
+<!--                            &lt;!&ndash;                            <h3 class="title-spec">アクセサリー素材</h3>&ndash;&gt;-->
+<!--                            &lt;!&ndash;                            <ng-container&ndash;&gt;-->
+<!--                            &lt;!&ndash;                                    *ngFor="let label of ['なし','プラチナ','ゴールド','ピンクゴールド','ホワイトゴールド','イエローゴールド'];let i = index">&ndash;&gt;-->
+<!--                            &lt;!&ndash;                                <label class="normal-radio" for="spec1-{{i}}">&ndash;&gt;-->
+<!--                            &lt;!&ndash;                                    <input type="radio" [value]="i" id="spec1-{{i}}" class="normal-radio-input"&ndash;&gt;-->
+<!--                            &lt;!&ndash;                                           name="spec1">&ndash;&gt;-->
+<!--                            &lt;!&ndash;                                    <span>{{label}}</span></label>&ndash;&gt;-->
+<!--                            &lt;!&ndash;                            </ng-container>&ndash;&gt;-->
+
+<!--                        </td>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                        <th>キャッチコピー</th>-->
+<!--                        <td>-->
+<!--                            <ng-container *ngIf="this.itemInputForm.controls.basic.controls.catchcopy.value">-->
+<!--                                <div class="info icon">HTML不可 / 500文字</div>-->
+<!--                                <textarea class="form-control" formControlName="catchcopy"-->
+<!--                                          [class.error]="this.itemInputForm.controls.basic.controls.catchcopy.value.length > 500"></textarea>-->
+<!--                                <div class="count-byte"-->
+<!--                                     [class.over]="this.itemInputForm.controls.basic.controls.catchcopy.value.length > 500">-->
+<!--                                    {{this.itemInputForm.controls.basic.controls.catchcopy.value.length}} / 500文字-->
+<!--                                </div>-->
+<!--                            </ng-container>-->
+<!--                        </td>-->
+<!--                    </tr>-->
+
+<!--                    <tr>-->
+<!--                        <th>商品情報</th>-->
+<!--                        <td>-->
+<!--                            <ng-container *ngIf="this.itemInputForm.controls.basic.controls.itemInformation.value">-->
+<!--                                <div class="info icon">HTML不可 / 500文字</div>-->
+<!--                                <textarea class="form-control" formControlName="itemInformation"-->
+<!--                                          [class.error]="this.itemInputForm.controls.basic.controls.itemInformation.value.length > 500"></textarea>-->
+<!--                                <div class="count-byte"-->
+<!--                                     [class.over]="this.itemInputForm.controls.basic.controls.itemInformation.value.length > 500">-->
+<!--                                    {{this.itemInputForm.controls.basic.controls.itemInformation.value.length}} /-->
+<!--                                    500文字-->
+<!--                                </div>-->
+<!--                            </ng-container>-->
+<!--                        </td>-->
+<!--                    </tr>-->
+<!--                    </tbody>-->
+<!--                </table>-->
+<!--            </div>-->
+<!--            <div class="card-footer double">-->
+<!--                <a disableOnLoading="a" class="btn btn-outline-secondary"-->
+<!--                   [routerLink]="['/items/info/'+itemId]">詳細へ戻る</a>-->
+<!--                <button disableOnLoading="button" class="btn btn-primary" type="submit">保存</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </form>-->
+<!--</section>-->
+
+<!--&lt;!&ndash; Modal &ndash;&gt;-->
+<!--<div class="modal fade" id="modalSaveComplete" tabindex="-1" aria-hidden="true">-->
+<!--    <div class="modal-dialog modal-dialog-centered">-->
+<!--        <div class="modal-content">-->
+<!--            <div class="modal-header">-->
+<!--                <h5 class="modal-title">保存完了</h5>-->
+<!--            </div>-->
+<!--            <div class="modal-body message">-->
+<!--                Yahoo!ショッピングのデータを保存しました。-->
+<!--            </div>-->
+<!--            <div class="modal-footer">-->
+<!--                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">-->
+<!--                    閉じる-->
+<!--                </button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
