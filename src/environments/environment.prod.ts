@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  shopProxy: "https://shop-manage.cmn.jp/svc",
+  shopProxy: 'https://global-dev.aiko-1959.com:12000', // proxy port
   ipUrl: "https://api.ipify.org/?format=json",
   imageUrl: "https://shop-picture.cmn.jp/images/",
   cookieDomain: ".shop-manage.cmn.jp",
